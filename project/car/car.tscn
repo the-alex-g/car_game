@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dklsh7qt6lamo"]
+
+[ext_resource type="Script" uid="uid://7ak0k7bb14b0" path="res://car/car.gd" id="1_2gitb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_33qfd"]
+
+[node name="Car" type="CharacterBody2D"]
+script = ExtResource("1_2gitb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_33qfd")
+
+[node name="DriveAxle" type="Marker2D" parent="."]
+position = Vector2(10, 0)
