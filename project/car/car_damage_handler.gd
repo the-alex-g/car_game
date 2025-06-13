@@ -40,13 +40,24 @@ func point_exists(index: int, position: Vector2) -> bool:
 
 
 func damage_car(index: int, amount: float, offset: Vector2, radius := 10) -> void:
-	var position := offset + Vector2(car_size) / 2
-	for x in range(position.x - radius, position.x + radius):
-		for y in range(position.y - radius, position.y + radius):
-			if point_exists(index, Vector2(x, y)):
-				var current_value := get_value(index, Vector2(x, y))
+	var position := Vector2i(offset) + car_size / 2
+	var frontier : Array[Vector2i] = [position]
+	var visited : Array[Vector2i] = []
+	var visited_count := 0
+	
+	while not frontier.is_empty() and visited_count < roundi(PI * pow(radius, 2.0)):
+		var current : Vector2i = frontier.pop_front()
+		if not current in visited:
+			visited.append(current)
+			if point_exists(index, current):
+				visited_count += 1
+				var current_value := get_value(index, current)
 				current_value.r += amount
-				car_damage_images[index].set_pixel(x, y, current_value)
+				car_damage_images[index].set_pixelv(current, current_value)
+		
+			for direction in [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]:
+				if not ((current + direction) in visited):
+					frontier.append(current + direction)
 
 
 func generate_car_texture(index: int) -> ImageTexture:
