@@ -20,6 +20,11 @@ var _rotational_acceleration := 0.0
 var _rotational_velocity := 0.0
 
 
+func _ready() -> void:
+	DamageHandler.log_car(index)
+	$Sprite2D.texture = DamageHandler.generate_car_texture(index)
+
+
 func _physics_process(delta: float) -> void:
 	_acceleration = Vector2.ZERO
 	_rotational_acceleration = 0.0
@@ -89,5 +94,8 @@ func apply_impulse(impulse: Vector2, at: Vector2) -> void:
 	var offset := at - global_position
 	velocity += impulse
 	var torque := (impulse - impulse.project(offset)).length() * offset.length()
-	torque /= 1000
+	torque /= 10000
 	_rotational_velocity += torque
+	
+	DamageHandler.damage_car(index, impulse.length() / 1000, offset.rotated(-rotation))
+	$Sprite2D.texture = DamageHandler.generate_car_texture(index)
