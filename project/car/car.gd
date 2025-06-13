@@ -22,7 +22,10 @@ var _rotational_velocity := 0.0
 
 func _ready() -> void:
 	DamageHandler.log_car(index)
-	$Sprite2D.texture = DamageHandler.generate_car_texture(index)
+	var shader_material := ShaderMaterial.new()
+	shader_material.shader = preload("res://car/car.gdshader")
+	$Sprite2D.material = shader_material
+	$Sprite2D.material.set_shader_parameter("damage", DamageHandler.generate_car_texture(index))
 
 
 func _physics_process(delta: float) -> void:
@@ -98,4 +101,4 @@ func apply_impulse(impulse: Vector2, at: Vector2) -> void:
 	_rotational_velocity += torque
 	
 	DamageHandler.damage_car(index, impulse.length() / 1000, offset.rotated(-rotation))
-	$Sprite2D.texture = DamageHandler.generate_car_texture(index)
+	$Sprite2D.material.set_shader_parameter("damage", DamageHandler.generate_car_texture(index))

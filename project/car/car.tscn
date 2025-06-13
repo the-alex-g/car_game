@@ -1,7 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://dklsh7qt6lamo"]
+[gd_scene load_steps=6 format=3 uid="uid://dklsh7qt6lamo"]
 
 [ext_resource type="Script" uid="uid://7ak0k7bb14b0" path="res://car/car.gd" id="1_2gitb"]
 [ext_resource type="Texture2D" uid="uid://okunjv6mdqkg" path="res://car/images/car_red_2.png" id="2_dxy33"]
+[ext_resource type="Shader" uid="uid://c6unmfhy2nevi" path="res://car/car.gdshader" id="2_hkabp"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jpe8o"]
+shader = ExtResource("2_hkabp")
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dxy33"]
 radius = 30.0
@@ -11,6 +15,7 @@ height = 96.0
 script = ExtResource("1_2gitb")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_jpe8o")
 texture = ExtResource("2_dxy33")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
