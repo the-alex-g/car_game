@@ -16,19 +16,25 @@ extends CharacterBody2D
 
 var _acceleration := Vector2.ZERO
 var _steer_direction := 0.0
+var _rotational_acceleration := 0.0
+var _rotational_velocity := 0.0
 
 
 func _physics_process(delta: float) -> void:
 	_acceleration = Vector2.ZERO
+	_rotational_acceleration = 0.0
 	_get_input()
 	_apply_friction()
 	velocity += _acceleration * delta
+	_rotational_velocity += _rotational_acceleration * delta
 	_calculate_steering(delta)
 	var collision := move_and_collide(velocity * delta)
 	if collision:
+		var impulse := velocity
 		if collision.get_collider() is Car:
-			collision.get_collider().velocity += velocity / 2.0
-		velocity = -velocity / 2.0
+			impulse -= collision.get_collider().velocity
+			collision.get_collider().apply_impulse(impulse, collision.get_position())
+		apply_impulse(-impulse, collision.get_position())
 
 
 func _get_input() -> void:
@@ -55,9 +61,12 @@ func _get_input() -> void:
 func _apply_friction() -> void:
 	if velocity.length_squared() < 1.0:
 		velocity = Vector2.ZERO
+	if absf(_rotational_velocity) < 0.01:
+		_rotational_velocity = 0.0
 	var friction_force := velocity * friction
 	var drag_force := velocity * velocity.length() * drag
 	_acceleration -= (drag_force + friction_force)
+	_rotational_acceleration -= _rotational_velocity * friction
 
 
 func _calculate_steering(delta: float) -> void:
@@ -73,4 +82,12 @@ func _calculate_steering(delta: float) -> void:
 	elif dot_product < 0:
 		velocity = -heading * minf(forward_speed, max_speed_reverse)
 	velocity += sideways_velocity * sideways_push_resistance
-	rotation = heading.angle()
+	rotation = heading.angle() + _rotational_velocity * delta
+
+
+func apply_impulse(impulse: Vector2, at: Vector2) -> void:
+	var offset := at - global_position
+	velocity += impulse
+	var torque := (impulse - impulse.project(offset)).length() * offset.length()
+	torque /= 1000
+	_rotational_velocity += torque
