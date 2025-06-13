@@ -41,12 +41,13 @@ func point_exists(index: int, position: Vector2) -> bool:
 
 func damage_car(index: int, amount: float, offset: Vector2, radius := 10) -> void:
 	var position := Vector2i(offset) + car_size / 2
-	var frontier : Array[Vector2i] = [position]
+	var frontier : Array[Vector3i] = [Vector3i(0, position.x, position.y)]
 	var visited : Array[Vector2i] = []
 	var visited_count := 0
 	
 	while not frontier.is_empty() and visited_count < roundi(PI * pow(radius, 2.0)):
-		var current : Vector2i = frontier.pop_front()
+		var info : Vector3i = frontier.pop_front()
+		var current := Vector2i(info.y, info.z)
 		if not current in visited:
 			visited.append(current)
 			if point_exists(index, current):
@@ -55,9 +56,16 @@ func damage_car(index: int, amount: float, offset: Vector2, radius := 10) -> voi
 				current_value.r += amount
 				car_damage_images[index].set_pixelv(current, current_value)
 		
-			for direction in [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]:
-				if not ((current + direction) in visited):
-					frontier.append(current + direction)
+			for direction : Vector2i in [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]:
+				var new := current + direction
+				if not new in visited:
+					var heuristic : int = roundi(new.distance_squared_to(position))
+					var insertion_index := 0
+					for cell in frontier:
+						if cell.x > heuristic:
+							break
+						insertion_index += 1
+					frontier.insert(insertion_index, Vector3i(heuristic, new.x, new.y))
 
 
 func generate_car_texture(index: int) -> ImageTexture:
