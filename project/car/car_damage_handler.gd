@@ -7,12 +7,12 @@ var car_damage_images : Dictionary = {}
 
 func _init() -> void:
 	var template := preload("res://car/images/car_red_2.png").get_image()
-	car_size = Vector2i(template.get_height(), template.get_width())
+	car_size = template.get_size()
 	base_damage_image = Image.create_empty(car_size.x, car_size.y, false, Image.FORMAT_BPTC_RGBA)
 	base_damage_image.decompress()
 	for x in car_size.x:
 		for y in car_size.y:
-			if template.get_pixel(y, x).a > 0.25:
+			if template.get_pixel(x, y).a > 0.25:
 				base_damage_image.set_pixel(x, y, Color(0.0, 0.0, 1.0, 1.0))
 			else:
 				base_damage_image.set_pixel(x, y, Color(0.0, 0.0, 0.0, 0.0))
