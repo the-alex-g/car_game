@@ -45,9 +45,11 @@ func _get_input() -> void:
 		_acceleration = -transform.x * braking
 	
 	if _acceleration == Vector2.ZERO:
-		_acceleration = transform.x * remap(
-			Input.get_joy_axis(index, JOY_AXIS_RIGHT_Y), 1.0, -1.0, -braking, engine_power
-		)
+		var input := Input.get_joy_axis(0, JOY_AXIS_RIGHT_Y)
+		if input < -0.1:
+			_acceleration = -braking * transform.x
+		elif input > 0.1:
+			_acceleration = engine_power * transform.x
 
 
 func _apply_friction() -> void:
@@ -59,9 +61,8 @@ func _apply_friction() -> void:
 
 
 func _calculate_steering(delta: float) -> void:
-	var rear_wheel := global_position - transform.x * wheel_base / 2
-	var front_wheel := global_position + transform.x * wheel_base / 2
-	rear_wheel += velocity * delta
+	var front_wheel := transform.x * wheel_base / 2
+	var rear_wheel := -front_wheel + velocity * delta
 	front_wheel += velocity.rotated(_steer_direction) * delta
 	var heading := (front_wheel - rear_wheel).normalized()
 	var dot_product := heading.dot(velocity.normalized())
