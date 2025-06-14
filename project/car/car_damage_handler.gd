@@ -1,8 +1,11 @@
 extends Node
 
+const MAX_COLLISIONS := 3
+
 var base_damage_image : Image
 var car_size := Vector2i.ZERO
 var car_damage_images : Dictionary = {}
+var _collisions := 0
 
 
 func _init() -> void:
@@ -13,9 +16,13 @@ func _init() -> void:
 	for x in car_size.x:
 		for y in car_size.y:
 			if template.get_pixel(x, y).a > 0.25:
-				base_damage_image.set_pixel(x, y, Color(0.0, 0.0, 1.0, 1.0))
+				base_damage_image.set_pixel(x, y, Color(0.0, 0.0, float(x) / car_size.x, 1.0))
 			else:
 				base_damage_image.set_pixel(x, y, Color(0.0, 0.0, 0.0, 0.0))
+
+
+func _process(_delta: float) -> void:
+	_collisions -= 1
 
 
 func log_car(index: int) -> void:
@@ -40,10 +47,19 @@ func point_exists(index: int, position: Vector2) -> bool:
 
 
 func damage_car(index: int, amount: float, offset: Vector2, radius := 10) -> void:
+	if _collisions == MAX_COLLISIONS:
+		return
+	
+	_collisions += 1
+	
 	var position := Vector2i(offset) + car_size / 2
 	var frontier : Array[Vector3i] = [Vector3i(0, position.x, position.y)]
 	var visited : Array[Vector2i] = []
 	var visited_count := 0
+	
+	var impact_point := position
+	if not point_exists(index, position):
+		impact_point = Vector2i.MAX
 	
 	while not frontier.is_empty() and visited_count < roundi(PI * pow(radius, 2.0)):
 		var info : Vector3i = frontier.pop_front()
@@ -51,15 +67,23 @@ func damage_car(index: int, amount: float, offset: Vector2, radius := 10) -> voi
 		if not current in visited:
 			visited.append(current)
 			if point_exists(index, current):
+				if not impact_point:
+					impact_point = current
 				visited_count += 1
 				var current_value := get_value(index, current)
-				current_value.r += amount
+				current_value.r += clampf(
+					amount * (1.0 - current.distance_squared_to(impact_point) / pow(radius, 2.0)),
+					0.0,
+					1.0
+				)
 				car_damage_images[index].set_pixelv(current, current_value)
 		
 			for direction : Vector2i in [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]:
 				var new := current + direction
 				if not new in visited:
-					var heuristic : int = roundi(new.distance_squared_to(position))
+					var heuristic : int = 0
+					if impact_point:
+						heuristic = roundi(new.distance_squared_to(impact_point))
 					var insertion_index := 0
 					for cell in frontier:
 						if cell.x > heuristic:
