@@ -13,7 +13,11 @@ func _init() -> void:
 	for x in car_size.x:
 		for y in car_size.y:
 			if template.get_pixel(x, y).a > 0.25:
-				base_damage_image.set_pixel(x, y, Color(0.0, 0.0, float(x) / car_size.x, 1.0))
+				base_damage_image.set_pixel(
+					x,
+					y,
+					Color(0.0, 0.0, maxf(0.5, float(x) / car_size.x), 1.0)
+				)
 			else:
 				base_damage_image.set_pixel(x, y, Color(0.0, 0.0, 0.0, 0.0))
 
