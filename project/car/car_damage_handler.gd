@@ -1,11 +1,8 @@
 extends Node
 
-const MAX_COLLISIONS := 3
-
 var base_damage_image : Image
 var car_size := Vector2i.ZERO
 var car_damage_images : Dictionary = {}
-var _collisions := 0
 
 
 func _init() -> void:
@@ -19,10 +16,6 @@ func _init() -> void:
 				base_damage_image.set_pixel(x, y, Color(0.0, 0.0, float(x) / car_size.x, 1.0))
 			else:
 				base_damage_image.set_pixel(x, y, Color(0.0, 0.0, 0.0, 0.0))
-
-
-func _process(_delta: float) -> void:
-	_collisions -= 1
 
 
 func log_car(index: int) -> void:
@@ -47,11 +40,6 @@ func point_exists(index: int, position: Vector2) -> bool:
 
 
 func damage_car(index: int, amount: float, offset: Vector2, radius := 10) -> void:
-	if _collisions == MAX_COLLISIONS:
-		return
-	
-	_collisions += 1
-	
 	var position := Vector2i(offset) + car_size / 2
 	var frontier : Array[Vector3i] = [Vector3i(0, position.x, position.y)]
 	var visited : Array[Vector2i] = []
@@ -67,7 +55,7 @@ func damage_car(index: int, amount: float, offset: Vector2, radius := 10) -> voi
 		if not current in visited:
 			visited.append(current)
 			if point_exists(index, current):
-				if not impact_point:
+				if impact_point == Vector2i.MAX:
 					impact_point = current
 				visited_count += 1
 				var current_value := get_value(index, current)
@@ -82,7 +70,7 @@ func damage_car(index: int, amount: float, offset: Vector2, radius := 10) -> voi
 				var new := current + direction
 				if not new in visited:
 					var heuristic : int = 0
-					if impact_point:
+					if impact_point != Vector2i.MAX:
 						heuristic = roundi(new.distance_squared_to(impact_point))
 					var insertion_index := 0
 					for cell in frontier:
