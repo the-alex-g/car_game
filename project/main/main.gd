@@ -4,7 +4,7 @@ const MIN_ZOOM_THRESHOLD := 0.33
 
 @onready var _spawn_points := $SpawnPointContainer.get_children()
 @onready var _car_container := $CarContainer
-@onready var _camera := $Camera2D
+@onready var _camera : Camera2D = $Camera2D
 
 var _screen_size := Vector2(DisplayServer.screen_get_size())
 
@@ -19,6 +19,7 @@ func _process(_delta: float) -> void:
 
 
 func _position_camera() -> void:
+	var current_camera_position := _camera.position
 	var min_x := INF
 	var min_y := INF
 	var max_x := 0.0
@@ -36,7 +37,13 @@ func _position_camera() -> void:
 	
 	
 	var rect := Rect2(min_x - 100, min_y - 100, max_x - min_x + 200, max_y - min_y + 200)
-	_camera.position = rect.get_center()
+	var new_center := rect.get_center()
+	
+	if new_center.distance_to(current_camera_position) > 10:
+		create_tween().tween_property(_camera, "position", new_center, 0.2)
+	else:
+		_camera.position = new_center
+	
 	var zoom := (rect.size.x + rect.size.y) / _screen_size.y
 	_camera.zoom = Vector2.ONE / zoom
 	

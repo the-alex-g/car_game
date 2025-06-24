@@ -107,7 +107,7 @@ func apply_impulse(impulse: Vector2, at: Vector2) -> bool:
 	var offset := at - global_position
 	velocity += impulse
 	var torque := (impulse - impulse.project(offset)).length() * offset.length()
-	torque /= 10000
+	torque /= 20000
 	_rotational_velocity += torque
 	
 	if not _dead:
