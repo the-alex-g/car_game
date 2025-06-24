@@ -46,6 +46,10 @@ func _physics_process(delta: float) -> void:
 
 
 func _get_input() -> void:
+	
+	if Input.is_action_just_pressed("die"):
+		_die()
+	
 	if disabled:
 		return
 	
@@ -106,6 +110,14 @@ func apply_impulse(impulse: Vector2, at: Vector2) -> void:
 		offset.rotated(-rotation)
 	)
 	if dead:
-		queue_free()
+		_die()
 	else:
 		$Sprite2D.material.set_shader_parameter("damage", DamageHandler.generate_car_texture(index))
+
+
+func _die() -> void:
+	var explosion := preload("res://explosions/explosion.tscn").instantiate()
+	get_tree().root.add_child(explosion)
+	explosion.global_position = global_position
+	await get_tree().create_timer(0.1).timeout
+	queue_free()
