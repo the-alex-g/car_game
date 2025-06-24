@@ -11,7 +11,7 @@ void fragment() {
 		float percent_damaged = color.r / color.b;
 		COLOR.rgb *= 1.0 - percent_damaged;
 	}
-	
+
 	if (destroyed) {
 		COLOR.rgb *= (COLOR.r + COLOR.b + COLOR.g) / 3.0;
 	}

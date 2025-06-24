@@ -5,11 +5,6 @@
 [node name="Main" type="Node2D"]
 script = ExtResource("1_pjrb6")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
-polygon = PackedVector2Array(26, 5, 29, 611, 1112, 619, 1116, 19, 46, 8, 22, 1, 1162, -10, 1145, 659, -12, 645)
-
 [node name="SpawnPointContainer" type="Node2D" parent="."]
 
 [node name="Marker2D" type="Marker2D" parent="SpawnPointContainer"]
@@ -29,3 +24,5 @@ position = Vector2(152, 505)
 rotation = -0.748064
 
 [node name="CarContainer" type="Node2D" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]

@@ -52,9 +52,8 @@ func _physics_process(delta: float) -> void:
 
 
 func _get_input() -> void:
-	
 	if Input.is_action_just_pressed("die"):
-		_die()
+		die()
 	
 	if disabled:
 		return
@@ -118,10 +117,10 @@ func apply_impulse(impulse: Vector2, at: Vector2) -> void:
 		)
 		$Sprite2D.material.set_shader_parameter("damage", DamageHandler.generate_car_texture(index))
 		if _dead:
-			_die()
+			die()
 
 
-func _die() -> void:
+func die() -> void:
 	disabled = true
 	DamageHandler.remove_car(index)
 	var explosion := preload("res://explosions/explosion.tscn").instantiate()
