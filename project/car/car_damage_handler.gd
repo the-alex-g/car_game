@@ -1,5 +1,7 @@
 extends Node
 
+const ABSTRACTION_SIZE := 3
+
 var base_damage_image : Image
 var car_size := Vector2i.ZERO
 var car_damage_images : Dictionary = {}
@@ -7,12 +9,12 @@ var car_damage_images : Dictionary = {}
 
 func _init() -> void:
 	var template := preload("res://car/images/car_red_2.png").get_image()
-	car_size = template.get_size()
+	car_size = template.get_size() / ABSTRACTION_SIZE
 	base_damage_image = Image.create_empty(car_size.x, car_size.y, false, Image.FORMAT_BPTC_RGBA)
 	base_damage_image.decompress()
 	for x in car_size.x:
 		for y in car_size.y:
-			if template.get_pixel(x, y).a > 0.25:
+			if template.get_pixel(x * ABSTRACTION_SIZE, y * ABSTRACTION_SIZE).a > 0.25:
 				base_damage_image.set_pixel(
 					x,
 					y,
@@ -39,12 +41,22 @@ func point_in_bounds(position: Vector2) -> bool:
 
 
 func point_exists(index: int, position: Vector2) -> bool:
+	return point_in_bounds(position) and point_alive(index, position)
+
+
+func point_alive(index:int, position: Vector2) -> bool:
 	var value := get_value(index, position)
-	return point_in_bounds(position) and value.a > 0.0 and value.r < value.b
+	return value.a > 0.0 and value.r < value .b
+
+
+func _print(index: int, message) -> void:
+	if index == 0:
+		print(message)
 
 
 func damage_car(index: int, amount: float, offset: Vector2, radius := 10) -> void:
-	var position := Vector2i(offset) + car_size / 2
+	radius /= ABSTRACTION_SIZE
+	var position := Vector2i(offset) / ABSTRACTION_SIZE + car_size / 2
 	var frontier : Array[Vector3i] = [Vector3i(0, position.x, position.y)]
 	var visited : Array[Vector2i] = []
 	var visited_count := 0
@@ -72,7 +84,7 @@ func damage_car(index: int, amount: float, offset: Vector2, radius := 10) -> voi
 		
 			for direction : Vector2i in [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]:
 				var new := current + direction
-				if not new in visited:
+				if not new in visited and point_in_bounds(new):
 					var heuristic : int = 0
 					if impact_point != Vector2i.MAX:
 						heuristic = roundi(new.distance_squared_to(impact_point))
@@ -85,4 +97,5 @@ func damage_car(index: int, amount: float, offset: Vector2, radius := 10) -> voi
 
 
 func generate_car_texture(index: int) -> ImageTexture:
-	return ImageTexture.create_from_image(car_damage_images[index])
+	var image : Image = car_damage_images[index]
+	return ImageTexture.create_from_image(image)

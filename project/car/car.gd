@@ -59,7 +59,7 @@ func _get_input() -> void:
 		_acceleration = -transform.x * braking
 	
 	if _acceleration == Vector2.ZERO:
-		var input := Input.get_joy_axis(0, JOY_AXIS_RIGHT_Y)
+		var input := -Input.get_joy_axis(index, JOY_AXIS_RIGHT_Y)
 		if input < -0.1:
 			_acceleration = -braking * transform.x
 		elif input > 0.1:
