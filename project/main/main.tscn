@@ -1,12 +1,31 @@
 [gd_scene load_steps=2 format=3 uid="uid://cafrovvxxyjum"]
 
-[ext_resource type="PackedScene" uid="uid://dklsh7qt6lamo" path="res://car/car.tscn" id="1_53q0u"]
+[ext_resource type="Script" uid="uid://bu36oo40u0tdy" path="res://main/main.gd" id="1_pjrb6"]
 
 [node name="Main" type="Node2D"]
+script = ExtResource("1_pjrb6")
 
-[node name="Car" parent="." instance=ExtResource("1_53q0u")]
-position = Vector2(167, 187)
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
 
-[node name="Car2" parent="." instance=ExtResource("1_53q0u")]
-position = Vector2(346, 238)
-index = 1
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PackedVector2Array(26, 5, 29, 611, 1112, 619, 1116, 19, 46, 8, 22, 1, 1162, -10, 1145, 659, -12, 645)
+
+[node name="SpawnPointContainer" type="Node2D" parent="."]
+
+[node name="Marker2D" type="Marker2D" parent="SpawnPointContainer"]
+position = Vector2(162, 140)
+rotation = 0.563519
+
+[node name="Marker2D2" type="Marker2D" parent="SpawnPointContainer"]
+position = Vector2(998, 135)
+rotation = 2.67782
+
+[node name="Marker2D3" type="Marker2D" parent="SpawnPointContainer"]
+position = Vector2(984, 507)
+rotation = -2.61284
+
+[node name="Marker2D4" type="Marker2D" parent="SpawnPointContainer"]
+position = Vector2(152, 505)
+rotation = -0.748064
+
+[node name="CarContainer" type="Node2D" parent="."]

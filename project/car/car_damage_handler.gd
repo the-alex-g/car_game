@@ -62,7 +62,7 @@ func _print(index: int, message) -> void:
 		print(message)
 
 
-func damage_car(index: int, amount: float, offset: Vector2, radius := 10) -> bool:
+func damage_car(index: int, amount: float, offset: Vector2, radius := 17) -> bool:
 	radius /= ABSTRACTION_SIZE
 	var position := Vector2i(offset) / ABSTRACTION_SIZE + car_size / 2
 	var frontier : Array[Vector3i] = [Vector3i(0, position.x, position.y)]
@@ -85,7 +85,7 @@ func damage_car(index: int, amount: float, offset: Vector2, radius := 10) -> boo
 				visited_count += 1
 				var current_value := get_value(index, current)
 				current_value.r += clampf(
-					amount * (1.0 - current.distance_squared_to(impact_point) / pow(radius, 2.0)),
+					amount * (1.0 - current.distance_to(impact_point) / radius),
 					0.0,
 					1.0
 				)

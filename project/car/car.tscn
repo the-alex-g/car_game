@@ -10,8 +10,8 @@ _data = [Vector2(0, 0.516854), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="Gradient" id="Gradient_xhmyn"]
-offsets = PackedFloat32Array(0, 0.146667, 0.246667, 1)
-colors = PackedColorArray(0.772549, 0.396078, 0, 1, 0.780392, 0, 0, 1, 0.741385, 0.741385, 0.741385, 1, 0.226707, 0.226707, 0.226707, 1)
+offsets = PackedFloat32Array(0.02, 0.586667, 0.973333)
+colors = PackedColorArray(0.741385, 0.741385, 0.741385, 1, 0.226707, 0.226707, 0.226707, 1, 0.147672, 0.147672, 0.147672, 1)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dxy33"]
 radius = 35.0

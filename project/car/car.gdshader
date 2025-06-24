@@ -13,7 +13,6 @@ void fragment() {
 	}
 	
 	if (destroyed) {
-		// make it greyscale
-		COLOR.rgb = vec3((COLOR.r + COLOR.b + COLOR.g) / 3.0);
+		COLOR.rgb *= (COLOR.r + COLOR.b + COLOR.g) / 3.0;
 	}
 }

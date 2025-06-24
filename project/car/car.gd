@@ -3,6 +3,8 @@ extends CharacterBody2D
 
 # car movement from this video: https://www.youtube.com/watch?v=mJ1ZfGDTMCY
 
+signal respawn_requested
+
 @export var wheel_base := 8.0
 @export var steering_angle := PI / 30
 @export var engine_power := 300.0
@@ -11,7 +13,11 @@ extends CharacterBody2D
 @export var braking := 100.0
 @export var max_speed_reverse := 100.0
 @export var sideways_push_resistance := 0.98
-@export var index := 0
+@export var index := 0 :
+	set(value):
+		index = value
+		DamageHandler.log_car(index)
+		$Sprite2D.material.set_shader_parameter("damage", DamageHandler.generate_car_texture(index))
 @export var disabled := false
 
 var _acceleration := Vector2.ZERO
@@ -22,11 +28,9 @@ var _dead := false
 
 
 func _ready() -> void:
-	DamageHandler.log_car(index)
 	var shader_material := ShaderMaterial.new()
 	shader_material.shader = preload("res://car/car.gdshader")
 	$Sprite2D.material = shader_material
-	$Sprite2D.material.set_shader_parameter("damage", DamageHandler.generate_car_texture(index))
 
 
 func _physics_process(delta: float) -> void:
@@ -125,3 +129,4 @@ func _die() -> void:
 	await get_tree().create_timer(0.1).timeout
 	$Sprite2D.material.set_shader_parameter("destroyed", true)
 	$SmokeParticles.emitting = true
+	respawn_requested.emit()
