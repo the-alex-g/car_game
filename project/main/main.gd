@@ -40,7 +40,7 @@ func _position_camera() -> void:
 	var new_center := rect.get_center()
 	
 	if new_center.distance_to(current_camera_position) > 10:
-		create_tween().tween_property(_camera, "position", new_center, 0.2)
+		create_tween().tween_property(_camera, "position", new_center, 0.3)
 	else:
 		_camera.position = new_center
 	
@@ -56,6 +56,7 @@ func _position_camera() -> void:
 func _add_car(index: int) -> void:
 	var car := preload("res://car/car.tscn").instantiate()
 	_car_container.add_child(car)
-	car.global_transform = _spawn_points[index].global_transform
+	car.global_position = _spawn_points[index].global_position
+	car.rotation = PI / 4 + index * PI / 2
 	car.index = index
 	car.respawn_requested.connect(_add_car.bind(index))
