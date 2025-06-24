@@ -18,6 +18,7 @@ var _acceleration := Vector2.ZERO
 var _steer_direction := 0.0
 var _rotational_acceleration := 0.0
 var _rotational_velocity := 0.0
+var _dead := false
 
 
 func _ready() -> void:
@@ -104,20 +105,23 @@ func apply_impulse(impulse: Vector2, at: Vector2) -> void:
 	torque /= 10000
 	_rotational_velocity += torque
 	
-	var dead := DamageHandler.damage_car(
-		index,
-		impulse.length() / 200,
-		offset.rotated(-rotation)
-	)
-	if dead:
-		_die()
-	else:
+	if not _dead:
+		_dead = DamageHandler.damage_car(
+			index,
+			impulse.length() / 200,
+			offset.rotated(-rotation)
+		)
 		$Sprite2D.material.set_shader_parameter("damage", DamageHandler.generate_car_texture(index))
+		if _dead:
+			_die()
 
 
 func _die() -> void:
+	disabled = true
+	DamageHandler.remove_car(index)
 	var explosion := preload("res://explosions/explosion.tscn").instantiate()
 	get_tree().root.add_child(explosion)
 	explosion.global_position = global_position
 	await get_tree().create_timer(0.1).timeout
-	queue_free()
+	$Sprite2D.material.set_shader_parameter("destroyed", true)
+	$SmokeParticles.emitting = true

@@ -32,6 +32,10 @@ func log_car(index: int) -> void:
 	car_damage_images[index] = base_damage_image.duplicate()
 
 
+func remove_car(index: int) -> void:
+	car_damage_images.erase(index)
+
+
 func get_value(index: int, position: Vector2) -> Color:
 	if point_in_bounds(position):
 		return car_damage_images[index].get_pixelv(position)

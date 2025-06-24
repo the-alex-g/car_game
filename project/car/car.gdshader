@@ -1,6 +1,7 @@
 shader_type canvas_item;
 
 uniform sampler2D damage;
+uniform bool destroyed = false;
 
 void fragment() {
 	vec4 color = texture(damage, UV);
@@ -9,5 +10,10 @@ void fragment() {
 	} else {
 		float percent_damaged = color.r / color.b;
 		COLOR.rgb *= 1.0 - percent_damaged;
+	}
+	
+	if (destroyed) {
+		// make it greyscale
+		COLOR.rgb = vec3((COLOR.r + COLOR.b + COLOR.g) / 3.0);
 	}
 }

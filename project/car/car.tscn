@@ -1,8 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://dklsh7qt6lamo"]
+[gd_scene load_steps=8 format=3 uid="uid://dklsh7qt6lamo"]
 
 [ext_resource type="Script" uid="uid://7ak0k7bb14b0" path="res://car/car.gd" id="1_2gitb"]
 [ext_resource type="Texture2D" uid="uid://okunjv6mdqkg" path="res://car/images/car_red_2.png" id="2_dxy33"]
+[ext_resource type="Texture2D" uid="uid://bbro3aas4yija" path="res://explosions/particle.png" id="2_h3fet"]
 [ext_resource type="Texture2D" uid="uid://ccu1xgv3ylejm" path="res://car/images/drivetrain.png" id="2_jpe8o"]
+
+[sub_resource type="Curve" id="Curve_bkrhx"]
+_data = [Vector2(0, 0.516854), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_xhmyn"]
+offsets = PackedFloat32Array(0, 0.146667, 0.246667, 1)
+colors = PackedColorArray(0.772549, 0.396078, 0, 1, 0.780392, 0, 0, 1, 0.741385, 0.741385, 0.741385, 1, 0.226707, 0.226707, 0.226707, 1)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dxy33"]
 radius = 35.0
@@ -13,6 +22,24 @@ script = ExtResource("1_2gitb")
 
 [node name="Drivetrain" type="Sprite2D" parent="."]
 texture = ExtResource("2_jpe8o")
+
+[node name="SmokeParticles" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 32
+texture = ExtResource("2_h3fet")
+lifetime = 3.0
+preprocess = 0.5
+lifetime_randomness = 0.5
+emission_shape = 3
+emission_rect_extents = Vector2(60, 30)
+direction = Vector2(-1, 0)
+spread = 75.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 10.0
+scale_amount_min = 0.5
+scale_amount_curve = SubResource("Curve_bkrhx")
+color_ramp = SubResource("Gradient_xhmyn")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_dxy33")
