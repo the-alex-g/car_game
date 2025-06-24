@@ -4,8 +4,9 @@ const ABSTRACTION_SIZE := 3
 
 var base_damage_image : Image
 var car_size := Vector2i.ZERO
-var car_damage_images : Dictionary = {}
+var car_damage_images := {}
 var kill_zone : Image
+var kills := {}
 
 
 func _init() -> void:
@@ -30,10 +31,8 @@ func _init() -> void:
 
 func log_car(index: int) -> void:
 	car_damage_images[index] = base_damage_image.duplicate()
-
-
-func remove_car(index: int) -> void:
-	car_damage_images.erase(index)
+	if not index in kills:
+		kills[index] = 0
 
 
 func get_value(index: int, position: Vector2) -> Color:
@@ -112,3 +111,11 @@ func damage_car(index: int, amount: float, offset: Vector2, radius := 17) -> boo
 func generate_car_texture(index: int) -> ImageTexture:
 	var image : Image = car_damage_images[index]
 	return ImageTexture.create_from_image(image)
+
+
+func log_kill(index: int) -> void:
+	kills[index] += 1
+
+
+func get_score(index: int) -> int:
+	return kills[index]

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cafrovvxxyjum"]
+[gd_scene load_steps=3 format=3 uid="uid://cafrovvxxyjum"]
 
 [ext_resource type="Script" uid="uid://bu36oo40u0tdy" path="res://main/main.gd" id="1_pjrb6"]
+[ext_resource type="PackedScene" uid="uid://dmv4xudvh6xyj" path="res://main/hud.tscn" id="2_pjrb6"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_pjrb6")
@@ -26,3 +27,5 @@ rotation = -0.748064
 [node name="CarContainer" type="Node2D" parent="."]
 
 [node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Hud" parent="." instance=ExtResource("2_pjrb6")]

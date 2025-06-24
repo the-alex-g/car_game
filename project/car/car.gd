@@ -47,7 +47,8 @@ func _physics_process(delta: float) -> void:
 		var impulse := velocity
 		if collision.get_collider() is Car:
 			impulse -= collision.get_collider().velocity
-			collision.get_collider().apply_impulse(impulse, collision.get_position())
+			if collision.get_collider().apply_impulse(impulse, collision.get_position()):
+				DamageHandler.log_kill(index)
 		apply_impulse(-impulse, collision.get_position())
 
 
@@ -102,7 +103,7 @@ func _calculate_steering(delta: float) -> void:
 	rotation = heading.angle() + _rotational_velocity * delta
 
 
-func apply_impulse(impulse: Vector2, at: Vector2) -> void:
+func apply_impulse(impulse: Vector2, at: Vector2) -> bool:
 	var offset := at - global_position
 	velocity += impulse
 	var torque := (impulse - impulse.project(offset)).length() * offset.length()
@@ -118,11 +119,12 @@ func apply_impulse(impulse: Vector2, at: Vector2) -> void:
 		$Sprite2D.material.set_shader_parameter("damage", DamageHandler.generate_car_texture(index))
 		if _dead:
 			die()
+			return true
+	return false
 
 
 func die() -> void:
 	disabled = true
-	DamageHandler.remove_car(index)
 	var explosion := preload("res://explosions/explosion.tscn").instantiate()
 	get_tree().root.add_child(explosion)
 	explosion.global_position = global_position

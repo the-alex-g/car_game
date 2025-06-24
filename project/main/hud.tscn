@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://dmv4xudvh6xyj"]
+
+[ext_resource type="Script" uid="uid://bo8q5u5g0om7q" path="res://main/hud.gd" id="1_gljsp"]
+
+[node name="Hud" type="CanvasLayer"]
+script = ExtResource("1_gljsp")
+
+[node name="ScoreLabelContainer" type="VBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="ScoreLabelContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="ScoreLabelContainer"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="ScoreLabelContainer"]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="ScoreLabelContainer"]
+layout_mode = 2

@@ -14,6 +14,10 @@ func _ready() -> void:
 		_add_car(x)
 
 
+func _process(_delta: float) -> void:
+	_position_camera()
+
+
 func _position_camera() -> void:
 	var min_x := INF
 	var min_y := INF
@@ -38,12 +42,8 @@ func _position_camera() -> void:
 	
 	for car : Car in _car_container.get_children():
 		if not car.disabled:
-			if car.global_position.distance_to(average) > 1500:
+			if car.global_position.distance_to(average) > 1000:
 				car.die()
-
-
-func _physics_process(_delta: float) -> void:
-	_position_camera()
 
 
 func _add_car(index: int) -> void:
