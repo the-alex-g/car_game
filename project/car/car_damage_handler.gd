@@ -5,6 +5,7 @@ const ABSTRACTION_SIZE := 3
 var base_damage_image : Image
 var car_size := Vector2i.ZERO
 var car_damage_images : Dictionary = {}
+var kill_zone : Image
 
 
 func _init() -> void:
@@ -22,6 +23,9 @@ func _init() -> void:
 				)
 			else:
 				base_damage_image.set_pixel(x, y, Color(0.0, 0.0, 0.0, 0.0))
+	kill_zone = preload("res://car/images/killzone.png").get_image()
+	kill_zone.decompress()
+	kill_zone.resize(car_size.x, car_size.y, Image.INTERPOLATE_NEAREST)
 
 
 func log_car(index: int) -> void:
@@ -54,7 +58,7 @@ func _print(index: int, message) -> void:
 		print(message)
 
 
-func damage_car(index: int, amount: float, offset: Vector2, radius := 10) -> void:
+func damage_car(index: int, amount: float, offset: Vector2, radius := 10) -> bool:
 	radius /= ABSTRACTION_SIZE
 	var position := Vector2i(offset) / ABSTRACTION_SIZE + car_size / 2
 	var frontier : Array[Vector3i] = [Vector3i(0, position.x, position.y)]
@@ -71,6 +75,7 @@ func damage_car(index: int, amount: float, offset: Vector2, radius := 10) -> voi
 		if not current in visited:
 			visited.append(current)
 			if point_exists(index, current):
+				
 				if impact_point == Vector2i.MAX:
 					impact_point = current
 				visited_count += 1
@@ -80,6 +85,8 @@ func damage_car(index: int, amount: float, offset: Vector2, radius := 10) -> voi
 					0.0,
 					1.0
 				)
+				if kill_zone.get_pixelv(current).a > 0.0 and current_value.r > current_value.b:
+					return true
 				car_damage_images[index].set_pixelv(current, current_value)
 		
 			for direction : Vector2i in [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]:
@@ -94,6 +101,8 @@ func damage_car(index: int, amount: float, offset: Vector2, radius := 10) -> voi
 							break
 						insertion_index += 1
 					frontier.insert(insertion_index, Vector3i(heuristic, new.x, new.y))
+	
+	return false
 
 
 func generate_car_texture(index: int) -> ImageTexture:

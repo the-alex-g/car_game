@@ -100,5 +100,12 @@ func apply_impulse(impulse: Vector2, at: Vector2) -> void:
 	torque /= 10000
 	_rotational_velocity += torque
 	
-	DamageHandler.damage_car(index, impulse.length() / 200, offset.rotated(-rotation))
-	$Sprite2D.material.set_shader_parameter("damage", DamageHandler.generate_car_texture(index))
+	var dead := DamageHandler.damage_car(
+		index,
+		impulse.length() / 200,
+		offset.rotated(-rotation)
+	)
+	if dead:
+		queue_free()
+	else:
+		$Sprite2D.material.set_shader_parameter("damage", DamageHandler.generate_car_texture(index))

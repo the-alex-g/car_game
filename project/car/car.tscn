@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://dklsh7qt6lamo"]
+[gd_scene load_steps=5 format=3 uid="uid://dklsh7qt6lamo"]
 
 [ext_resource type="Script" uid="uid://7ak0k7bb14b0" path="res://car/car.gd" id="1_2gitb"]
 [ext_resource type="Texture2D" uid="uid://okunjv6mdqkg" path="res://car/images/car_red_2.png" id="2_dxy33"]
+[ext_resource type="Texture2D" uid="uid://ccu1xgv3ylejm" path="res://car/images/drivetrain.png" id="2_jpe8o"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dxy33"]
 radius = 35.0
@@ -9,6 +10,9 @@ height = 116.0
 
 [node name="Car" type="CharacterBody2D"]
 script = ExtResource("1_2gitb")
+
+[node name="Drivetrain" type="Sprite2D" parent="."]
+texture = ExtResource("2_jpe8o")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_dxy33")
