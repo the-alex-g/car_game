@@ -17,6 +17,7 @@ signal respawn_requested
 	set(value):
 		index = value
 		DamageHandler.log_car(index)
+		$Sprite2D.texture = load("res://car/images/car_%d.png" % index)
 		$Sprite2D.material.set_shader_parameter("damage", DamageHandler.generate_car_texture(index))
 @export var disabled := false
 

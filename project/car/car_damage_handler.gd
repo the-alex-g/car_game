@@ -9,7 +9,7 @@ var kill_zone : Image
 
 
 func _init() -> void:
-	var template := preload("res://car/images/car_red_2.png").get_image()
+	var template := preload("res://car/images/car_0.png").get_image()
 	car_size = template.get_size() / ABSTRACTION_SIZE
 	base_damage_image = Image.create_empty(car_size.x, car_size.y, false, Image.FORMAT_BPTC_RGBA)
 	base_damage_image.decompress()
