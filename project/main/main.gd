@@ -1,6 +1,8 @@
 extends Node2D
 
-const MIN_ZOOM_THRESHOLD := 0.33
+const CAR_CULL_DISTANCE := 1000
+const SCREEN_MARGIN := 100
+const TWEEN_THRESHOLD := 10
 
 @onready var _spawn_points := $SpawnPointContainer.get_children()
 @onready var _car_container := $CarContainer
@@ -35,11 +37,14 @@ func _position_camera() -> void:
 			average += car.global_position
 	average /= 4
 	
-	
-	var rect := Rect2(min_x - 100, min_y - 100, max_x - min_x + 200, max_y - min_y + 200)
+	var rect := Rect2(
+		min_x - SCREEN_MARGIN, min_y - SCREEN_MARGIN,
+		max_x - min_x + SCREEN_MARGIN * 2,
+		max_y - min_y + SCREEN_MARGIN * 2
+	)
 	var new_center := rect.get_center()
 	
-	if new_center.distance_to(current_camera_position) > 10:
+	if new_center.distance_to(current_camera_position) > TWEEN_THRESHOLD:
 		create_tween().tween_property(_camera, "position", new_center, 0.3)
 	else:
 		_camera.position = new_center
@@ -47,9 +52,13 @@ func _position_camera() -> void:
 	var zoom := (rect.size.x + rect.size.y) / _screen_size.y
 	_camera.zoom = Vector2.ONE / zoom
 	
+	_cull_cars(average)
+
+
+func _cull_cars(game_center: Vector2) -> void:
 	for car : Car in _car_container.get_children():
 		if not car.disabled:
-			if car.global_position.distance_to(average) > 1000:
+			if car.global_position.distance_to(game_center) > CAR_CULL_DISTANCE:
 				car.die()
 
 
