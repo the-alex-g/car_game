@@ -5,6 +5,7 @@ uniform bool destroyed = false;
 
 void fragment() {
 	vec4 color = texture(damage, UV);
+
 	if (color.a < 0.001 || color.r >= color.b) {
 		COLOR.a = 0.0;
 	} else {

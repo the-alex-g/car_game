@@ -113,7 +113,7 @@ func apply_impulse(impulse: Vector2, at: Vector2) -> bool:
 	if not _dead:
 		_dead = DamageHandler.damage_car(
 			index,
-			impulse.length() / 200,
+			impulse.length() / 400,
 			offset.rotated(-rotation)
 		)
 		$Sprite2D.material.set_shader_parameter("damage", DamageHandler.generate_car_texture(index))

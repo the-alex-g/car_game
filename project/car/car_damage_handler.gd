@@ -5,7 +5,6 @@ const ABSTRACTION_SIZE := 3
 var base_damage_image : Image
 var car_size := Vector2i.ZERO
 var car_damage_images := {}
-var kill_zone : Image
 var kills := {}
 
 
@@ -14,19 +13,21 @@ func _init() -> void:
 	car_size = template.get_size() / ABSTRACTION_SIZE
 	base_damage_image = Image.create_empty(car_size.x, car_size.y, false, Image.FORMAT_BPTC_RGBA)
 	base_damage_image.decompress()
+	var kill_zone := preload("res://car/images/killzone.png").get_image()
+	kill_zone.decompress()
 	for x in car_size.x:
 		for y in car_size.y:
 			if template.get_pixel(x * ABSTRACTION_SIZE, y * ABSTRACTION_SIZE).a > 0.25:
 				base_damage_image.set_pixel(
-					x,
-					y,
-					Color(0.0, 0.0, maxf(0.5, float(x) / car_size.x), 1.0)
+					x, y,
+					Color(
+						0.0,
+						1.0 if kill_zone.get_pixel(x * ABSTRACTION_SIZE, y * ABSTRACTION_SIZE).a == 1.0 else 0.0,
+						maxf(0.2, pow(float(x) / car_size.x, 2.0)), 1.0
+					)
 				)
 			else:
 				base_damage_image.set_pixel(x, y, Color(0.0, 0.0, 0.0, 0.0))
-	kill_zone = preload("res://car/images/killzone.png").get_image()
-	kill_zone.decompress()
-	kill_zone.resize(car_size.x, car_size.y, Image.INTERPOLATE_NEAREST)
 
 
 func log_car(index: int) -> void:
@@ -88,7 +89,7 @@ func damage_car(index: int, amount: float, offset: Vector2, radius := 17) -> boo
 					0.0,
 					1.0
 				)
-				if kill_zone.get_pixelv(current).a > 0.0 and current_value.r > current_value.b:
+				if current_value.g == 1.0 and current_value.r > current_value.b:
 					return true
 				car_damage_images[index].set_pixelv(current, current_value)
 		
