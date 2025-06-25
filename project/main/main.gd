@@ -7,11 +7,11 @@ const MIN_ZOOM_THRESHOLD := 0.33
 @onready var _camera : Camera2D = $Camera2D
 
 var _screen_size := Vector2(DisplayServer.screen_get_size())
+var _car_count := 0
 
 
 func _ready() -> void:
-	for x in 4:
-		_add_car(x)
+	_start_game()
 
 
 func _process(_delta: float) -> void:
@@ -59,4 +59,22 @@ func _add_car(index: int) -> void:
 	car.global_position = _spawn_points[index].global_position
 	car.rotation = PI / 4 + index * PI / 2
 	car.index = index
-	car.respawn_requested.connect(_add_car.bind(index))
+	_car_count += 1
+	car.died.connect(
+		func():
+			_car_count -= 1
+			if _car_count == 1:
+				_game_over()
+	)
+
+
+func _game_over() -> void:
+	for car in _car_container.get_children():
+		car.queue_free()
+	_start_game()
+
+
+func _start_game() -> void:
+	_car_count = 0
+	for x in 4:
+		_add_car(x)

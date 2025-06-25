@@ -3,7 +3,7 @@ extends CharacterBody2D
 
 # car movement from this video: https://www.youtube.com/watch?v=mJ1ZfGDTMCY
 
-signal respawn_requested
+signal died
 
 @export var wheel_base := 8.0
 @export var steering_angle := PI / 30
@@ -131,4 +131,4 @@ func die() -> void:
 	await get_tree().create_timer(0.1).timeout
 	$Sprite2D.material.set_shader_parameter("destroyed", true)
 	$SmokeParticles.emitting = true
-	respawn_requested.emit()
+	died.emit()
