@@ -1,5 +1,5 @@
 class_name Car
-extends CharacterBody2D
+extends CustomPhysicsBody
 
 # car movement from this video: https://www.youtube.com/watch?v=mJ1ZfGDTMCY
 
@@ -8,23 +8,17 @@ signal died
 @export var wheel_base := 8.0
 @export var steering_angle := PI / 30
 @export var engine_power := 300.0
-@export var friction := 0.9
-@export var drag := 0.001
 @export var braking := 100.0
 @export var max_speed_reverse := 100.0
-@export var sideways_push_resistance := 0.98
+@export var sideways_push_resistance := 0.02
 @export var index := 0 :
 	set(value):
 		index = value
 		DamageHandler.log_car(index)
 		$Sprite2D.texture = load("res://car/images/car_%d.png" % index)
 		$Sprite2D.material.set_shader_parameter("damage", DamageHandler.generate_car_texture(index))
-@export var disabled := false
 
-var _acceleration := Vector2.ZERO
 var _steer_direction := 0.0
-var _rotational_acceleration := 0.0
-var _rotational_velocity := 0.0
 var _dead := false
 
 
@@ -34,22 +28,9 @@ func _ready() -> void:
 	$Sprite2D.material = shader_material
 
 
-func _physics_process(delta: float) -> void:
-	_acceleration = Vector2.ZERO
-	_rotational_acceleration = 0.0
+func _resolve_custom_physics(delta: float) -> void:
 	_get_input()
-	_apply_friction()
-	velocity += _acceleration * delta
-	_rotational_velocity += _rotational_acceleration * delta
 	_calculate_steering(delta)
-	var collision := move_and_collide(velocity * delta)
-	if collision:
-		var impulse := velocity
-		if collision.get_collider() is Car:
-			impulse -= collision.get_collider().velocity
-			if collision.get_collider().apply_impulse(impulse, collision.get_position()):
-				DamageHandler.log_kill(index)
-		apply_impulse(-impulse, collision.get_position())
 
 
 func _get_input() -> void:
@@ -76,17 +57,6 @@ func _get_input() -> void:
 			_acceleration = engine_power * transform.x
 
 
-func _apply_friction() -> void:
-	if velocity.length_squared() < 1.0:
-		velocity = Vector2.ZERO
-	if absf(_rotational_velocity) < 0.01:
-		_rotational_velocity = 0.0
-	var friction_force := velocity * friction
-	var drag_force := velocity * velocity.length() * drag
-	_acceleration -= (drag_force + friction_force)
-	_rotational_acceleration -= _rotational_velocity * friction
-
-
 func _calculate_steering(delta: float) -> void:
 	var front_wheel := transform.x * wheel_base / 2
 	var rear_wheel := -front_wheel + velocity * delta
@@ -99,28 +69,24 @@ func _calculate_steering(delta: float) -> void:
 		velocity = heading * forward_speed
 	elif dot_product < 0:
 		velocity = -heading * minf(forward_speed, max_speed_reverse)
-	velocity += sideways_velocity * sideways_push_resistance
+	velocity += sideways_velocity * (1.0 - sideways_push_resistance)
 	rotation = heading.angle() + _rotational_velocity * delta
 
 
-func apply_impulse(impulse: Vector2, at: Vector2) -> bool:
-	var offset := at - global_position
-	velocity += impulse
-	var torque := (impulse - impulse.project(offset)).length() * offset.length()
-	torque /= 20000
-	_rotational_velocity += torque
+func apply_impulse(impulse: Vector2, at: Vector2) -> void:
+	super.apply_impulse(impulse, at)
+	
+	impulse /= mass
 	
 	if not _dead:
 		_dead = DamageHandler.damage_car(
 			index,
-			impulse.length() / 400,
-			offset.rotated(-rotation)
+			impulse.length() / 200,
+			(at - global_position).rotated(-rotation)
 		)
 		$Sprite2D.material.set_shader_parameter("damage", DamageHandler.generate_car_texture(index))
 		if _dead:
 			die()
-			return true
-	return false
 
 
 func die() -> void:

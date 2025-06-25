@@ -19,6 +19,7 @@ height = 116.0
 
 [node name="Car" type="CharacterBody2D"]
 script = ExtResource("1_2gitb")
+mass = 2000.0
 
 [node name="Drivetrain" type="Sprite2D" parent="."]
 texture = ExtResource("2_jpe8o")
