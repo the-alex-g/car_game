@@ -5,17 +5,22 @@ extends CustomPhysicsBody
 
 signal died
 
+const CAR_INFORMATION := [
+	{"color":0x5d5b5b, "name":"black"},
+	{"color":0x0, "name":"green"},
+]
+
 @export var wheel_base := 8.0
 @export var steering_angle := PI / 30
 @export var engine_power := 300.0
 @export var braking := 100.0
 @export var max_speed_reverse := 100.0
 @export var sideways_push_resistance := 0.02
+@export var color := Color.RED;
 @export var index := 0 :
 	set(value):
 		index = value
 		DamageHandler.log_car(index)
-		$Sprite2D.texture = load("res://car/images/car_%d.png" % index)
 		$Sprite2D.material.set_shader_parameter("damage", DamageHandler.generate_car_texture(index))
 
 var _steer_direction := 0.0
@@ -23,8 +28,13 @@ var _dead := false
 
 
 func _ready() -> void:
+	_initialize_shader()
+
+
+func _initialize_shader() -> void:
 	var shader_material := ShaderMaterial.new()
 	shader_material.shader = preload("res://car/car.gdshader")
+	shader_material.set_shader_parameter("chassis_color", color)
 	$Sprite2D.material = shader_material
 
 
