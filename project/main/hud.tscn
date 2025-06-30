@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dmv4xudvh6xyj"]
+[gd_scene load_steps=3 format=3 uid="uid://dmv4xudvh6xyj"]
 
 [ext_resource type="Script" uid="uid://bo8q5u5g0om7q" path="res://main/hud.gd" id="1_gljsp"]
+[ext_resource type="PackedScene" uid="uid://06vt7uujs2nu" path="res://main/end_game_screen.tscn" id="2_yvbcs"]
 
 [node name="Hud" type="CanvasLayer"]
 script = ExtResource("1_gljsp")
@@ -20,3 +21,8 @@ layout_mode = 2
 
 [node name="Label4" type="Label" parent="ScoreLabelContainer"]
 layout_mode = 2
+
+[node name="EndGameScreen" parent="." instance=ExtResource("2_yvbcs")]
+visible = false
+
+[connection signal="exited" from="EndGameScreen" to="." method="_on_end_game_screen_exited"]

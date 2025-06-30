@@ -29,3 +29,6 @@ rotation = -0.748064
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="Hud" parent="." instance=ExtResource("2_pjrb6")]
+
+[connection signal="game_ended" from="." to="Hud" method="_on_main_game_ended"]
+[connection signal="game_continued" from="Hud" to="." method="_on_hud_game_continued"]

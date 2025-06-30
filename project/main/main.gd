@@ -1,5 +1,7 @@
 extends Node2D
 
+signal game_ended(winner: Car)
+
 const CAR_CULL_DISTANCE := 1000
 const SCREEN_MARGIN := 100
 const TWEEN_THRESHOLD := 10
@@ -78,12 +80,23 @@ func _add_car(index: int) -> void:
 
 
 func _game_over() -> void:
-	for car in _car_container.get_children():
-		car.queue_free()
-	_start_game()
+	for car : Car in _car_container.get_children():
+		if not car.disabled:
+			game_ended.emit(car)
+			break
 
 
 func _start_game() -> void:
-	_car_count = 0
+	_remove_cars()
 	for x in 4:
 		_add_car(x)
+
+
+func _remove_cars() -> void:
+	for car in _car_container.get_children():
+		car.queue_free()
+	_car_count = 0
+
+
+func _on_hud_game_continued() -> void:
+	_start_game()
