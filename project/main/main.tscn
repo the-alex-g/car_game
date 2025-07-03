@@ -1,10 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://cafrovvxxyjum"]
+[gd_scene load_steps=4 format=3 uid="uid://cafrovvxxyjum"]
 
 [ext_resource type="Script" uid="uid://bu36oo40u0tdy" path="res://main/main.gd" id="1_pjrb6"]
 [ext_resource type="PackedScene" uid="uid://dmv4xudvh6xyj" path="res://main/hud.tscn" id="2_pjrb6"]
+[ext_resource type="PackedScene" uid="uid://bpcjncwrtcj3p" path="res://environment/oil_slick.tscn" id="3_xwkvk"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_pjrb6")
+
+[node name="OilSlick" parent="." instance=ExtResource("3_xwkvk")]
+position = Vector2(527, 291)
+points = 128
+frequency = null
 
 [node name="SpawnPointContainer" type="Node2D" parent="."]
 

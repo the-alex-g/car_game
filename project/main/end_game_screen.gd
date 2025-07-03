@@ -14,7 +14,7 @@ func _input(event: InputEvent) -> void:
 		hide()
 
 
-func open_screen(winner: Car) -> void:
+func open_screen(_winner: Car) -> void:
 	show()
 	_dead_time_timer.start()
 

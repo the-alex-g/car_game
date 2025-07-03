@@ -73,7 +73,8 @@ func _calculate_steering(delta: float) -> void:
 	var front_wheel := transform.x * wheel_base / 2
 	var rear_wheel := -front_wheel + velocity * delta
 	front_wheel += velocity.rotated(_steer_direction) * delta
-	var heading := (front_wheel - rear_wheel).normalized()
+	var heading : Vector2 = lerp(transform.x, front_wheel - rear_wheel, physics.friction).normalized()
+	
 	var dot_product := heading.dot(velocity.normalized())
 	var forward_speed := velocity.project(transform.x).length()
 	var sideways_velocity := velocity.project(transform.y)
@@ -85,10 +86,8 @@ func _calculate_steering(delta: float) -> void:
 	rotation = heading.angle() + _rotational_velocity * delta
 
 
-func apply_impulse(impulse: Vector2, at: Vector2) -> void:
-	super.apply_impulse(impulse, at)
-	
-	impulse /= mass
+func apply_impulse(impulse: Vector2, at: Vector2) -> Vector2:
+	impulse = super.apply_impulse(impulse, at)
 	
 	if not _dead:
 		_dead = DamageHandler.damage_car(
@@ -99,6 +98,8 @@ func apply_impulse(impulse: Vector2, at: Vector2) -> void:
 		_sprite.material.set_shader_parameter("damage", DamageHandler.generate_car_texture(index))
 		if _dead:
 			die()
+	
+	return impulse
 
 
 func die() -> void:
