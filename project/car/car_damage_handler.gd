@@ -5,7 +5,11 @@ const ABSTRACTION_SIZE := 3
 var base_damage_image : Image
 var car_size := Vector2i.ZERO
 var car_damage_images := {}
+var car_colors := {}
 var kills := {}
+var players := [] :
+	get():
+		return car_colors.keys()
 
 
 func _init() -> void:
@@ -34,6 +38,20 @@ func log_car(index: int) -> void:
 	car_damage_images[index] = base_damage_image.duplicate()
 	if not index in kills:
 		kills[index] = 0
+
+
+func log_cars(dict: Dictionary) -> void:
+	for i in dict:
+		log_car(i)
+		set_car_color(i, dict[i].color)
+
+
+func set_car_color(index: int, color: Color) -> void:
+	car_colors[index] = color
+
+
+func get_car_color(index: int) -> Color:
+	return car_colors[index]
 
 
 func get_value(index: int, position: Vector2) -> Color:

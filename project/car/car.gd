@@ -17,14 +17,12 @@ const CAR_INFORMATION := [
 @export var max_speed_reverse := 100.0
 @export var sideways_push_resistance := 0.02
 @export var color := Color.RED;
-@export var index := 0 :
-	set(value):
-		index = value
-		DamageHandler.log_car(index)
-		$Sprite2D.material.set_shader_parameter("damage", DamageHandler.generate_car_texture(index))
+@export var index := 0
 
 var _steer_direction := 0.0
 var _dead := false
+
+@onready var _sprite : Sprite2D = $Sprite2D
 
 
 func _ready() -> void:
@@ -34,8 +32,12 @@ func _ready() -> void:
 func _initialize_shader() -> void:
 	var shader_material := ShaderMaterial.new()
 	shader_material.shader = preload("res://car/car.gdshader")
-	shader_material.set_shader_parameter("chassis_color", color)
-	$Sprite2D.material = shader_material
+	_sprite.material = shader_material
+	_sprite.set_instance_shader_parameter(
+		"chassis_color",
+		DamageHandler.get_car_color(index)
+	)
+	_sprite.material.set_shader_parameter("damage", DamageHandler.generate_car_texture(index))
 
 
 func _resolve_custom_physics(delta: float) -> void:
@@ -94,7 +96,7 @@ func apply_impulse(impulse: Vector2, at: Vector2) -> void:
 			impulse.length() / 200,
 			(at - global_position).rotated(-rotation)
 		)
-		$Sprite2D.material.set_shader_parameter("damage", DamageHandler.generate_car_texture(index))
+		_sprite.material.set_shader_parameter("damage", DamageHandler.generate_car_texture(index))
 		if _dead:
 			die()
 
@@ -105,6 +107,6 @@ func die() -> void:
 	get_tree().root.add_child(explosion)
 	explosion.global_position = global_position
 	await get_tree().create_timer(0.1).timeout
-	$Sprite2D.material.set_shader_parameter("destroyed", true)
+	_sprite.material.set_shader_parameter("destroyed", true)
 	$SmokeParticles.emitting = true
 	died.emit()

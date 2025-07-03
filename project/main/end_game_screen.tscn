@@ -24,6 +24,7 @@ text = "FOO wins!"
 horizontal_alignment = 1
 
 [node name="Label2" type="Label" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -36,3 +37,9 @@ offset_right = 20.0
 grow_horizontal = 2
 grow_vertical = 0
 text = "press any button to continue"
+
+[node name="DeadTimeTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[connection signal="timeout" from="DeadTimeTimer" to="." method="_on_timer_timeout"]

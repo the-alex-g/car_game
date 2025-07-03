@@ -10,19 +10,15 @@ script = ExtResource("1_pjrb6")
 
 [node name="Marker2D" type="Marker2D" parent="SpawnPointContainer"]
 position = Vector2(162, 140)
-rotation = 0.563519
 
 [node name="Marker2D2" type="Marker2D" parent="SpawnPointContainer"]
 position = Vector2(998, 135)
-rotation = 2.67782
 
 [node name="Marker2D3" type="Marker2D" parent="SpawnPointContainer"]
 position = Vector2(984, 507)
-rotation = -2.61284
 
 [node name="Marker2D4" type="Marker2D" parent="SpawnPointContainer"]
 position = Vector2(152, 505)
-rotation = -0.748064
 
 [node name="CarContainer" type="Node2D" parent="."]
 

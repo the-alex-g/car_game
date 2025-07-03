@@ -6,7 +6,7 @@ signal game_continued
 
 
 func _process(_delta: float) -> void:
-	for i in 4:
+	for i in DamageHandler.players:
 		_score_label_container.get_child(i).text = "Player %d: %d kills" % [i, DamageHandler.get_score(i)]
 
 

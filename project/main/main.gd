@@ -66,10 +66,10 @@ func _cull_cars(game_center: Vector2) -> void:
 
 func _add_car(index: int) -> void:
 	var car := preload("res://car/car.tscn").instantiate()
+	car.index = index
 	_car_container.add_child(car)
 	car.global_position = _spawn_points[index].global_position
 	car.rotation = PI / 4 + index * PI / 2
-	car.index = index
 	_car_count += 1
 	car.died.connect(
 		func():
@@ -88,7 +88,7 @@ func _game_over() -> void:
 
 func _start_game() -> void:
 	_remove_cars()
-	for x in 4:
+	for x in DamageHandler.players:
 		_add_car(x)
 
 
