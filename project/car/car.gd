@@ -12,7 +12,7 @@ const CAR_INFORMATION := [
 
 @export var wheel_base := 8.0
 @export var steering_angle := PI / 30
-@export var engine_power := 300.0
+@export var engine_power := 350.0
 @export var braking := 100.0
 @export var max_speed_reverse := 100.0
 @export var sideways_push_resistance := 0.02

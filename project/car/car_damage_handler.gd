@@ -75,6 +75,11 @@ func point_alive(index:int, position: Vector2) -> bool:
 	return value.a > 0.0 and value.r < value .b
 
 
+func reset_car_damage() -> void:
+	for car in car_damage_images:
+		car_damage_images[car] = base_damage_image.duplicate()
+
+
 func _print(index: int, message) -> void:
 	if index == 0:
 		print(message)

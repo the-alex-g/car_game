@@ -74,7 +74,7 @@ func _add_car(index: int) -> void:
 	car.died.connect(
 		func():
 			_car_count -= 1
-			if _car_count == 1:
+			if _car_count <= 1:
 				_game_over()
 	)
 
@@ -99,4 +99,5 @@ func _remove_cars() -> void:
 
 
 func _on_hud_game_continued() -> void:
+	DamageHandler.reset_car_damage()
 	_start_game()
