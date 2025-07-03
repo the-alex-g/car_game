@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=3 uid="uid://bpcjncwrtcj3p"]
+
+[ext_resource type="Shader" uid="uid://symcjodqfd3c" path="res://environment/oil_slick.gdshader" id="1_p4ja5"]
+[ext_resource type="Script" uid="uid://dj4kg7tv83nls" path="res://environment/oil_slick.gd" id="1_xymsh"]
+[ext_resource type="Script" uid="uid://dxeqbgbjum0us" path="res://car/physics_mod.gd" id="2_t2ahq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bq0hj"]
+shader = ExtResource("1_p4ja5")
+
+[sub_resource type="Resource" id="Resource_p4ja5"]
+script = ExtResource("2_t2ahq")
+friction = 0.1
+drag = 1.0
+mass = 1.0
+bounciness = 1.0
+metadata/_custom_type_script = "uid://dxeqbgbjum0us"
+
+[node name="OilSlick" type="Area2D"]
+material = SubResource("ShaderMaterial_bq0hj")
+script = ExtResource("1_xymsh")
+physics = SubResource("Resource_p4ja5")
+min_radius = 40
+max_radius = 90
+frequency = 0.02
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+visible = false
+polygon = PackedVector2Array(67.2549, 0, 71.4191, 7.03417, 75.0012, 14.9187, 76.7429, 23.2797, 75.5407, 31.29, 70.8996, 37.8966, 63.0939, 42.158, 56.6874, 46.5222, 51.0226, 51.0226, 45.7758, 55.778, 40.8508, 61.1375, 34.3842, 64.3284, 28.3636, 68.4758, 22.4259, 73.9283, 15.722, 79.0397, 7.99512, 81.1758, -3.59976e-06, 82.3529, -8.18731, 83.1272, -16.8696, 84.8091, -26.1256, 86.1246, -33.5411, 80.9753, -40.4847, 75.7415, -46.9511, 70.2673, -52.8661, 64.4175, -55.4594, 55.4594, -57.2937, 47.0197, -58.692, 39.2167, -58.6218, 31.334, -62.1354, 25.7373, -65.86, 19.9784, -67.5011, 13.4268, -70.6386, 6.95729, -74.1176, -6.47957e-06, -75.7121, -7.45698, -66.9242, -13.312, -54.7895, -16.6202, -44.9259, -18.6089, -42.1939, -22.5531, -42.0626, -28.1053, -41.2272, -33.8343, -38.6829, -38.6829, -33.7099, -41.0757, -28.3232, -42.3886, -24.7714, -46.3441, -20.7099, -49.9982, -15.7664, -51.975, -10.6726, -53.6547, -5.40054, -54.8327, 6.61714e-07, -55.4902, 5.34289, -54.2473, 10.1371, -50.9624, 15.0265, -49.5357, 18.9841, -45.8317, 23.2001, -43.4044, 28.1053, -42.0626, 34.3319, -41.8335, 39.7921, -39.7921, 43.5008, -35.7002, 46.3014, -30.9376, 51.8777, -27.7292, 57.4255, -23.7864, 59.2928, -17.9863, 61.1548, -12.1644, 64.3943, -6.34229)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
