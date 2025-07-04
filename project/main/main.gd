@@ -5,8 +5,8 @@ signal game_ended(winner: Car)
 const CAR_CULL_DISTANCE := 1000
 const SCREEN_MARGIN := 100
 const TWEEN_THRESHOLD := 10
+const SPAWN_DISTANCE := 400
 
-@onready var _spawn_points := $SpawnPointContainer.get_children()
 @onready var _car_container := $CarContainer
 @onready var _camera : Camera2D = $Camera2D
 
@@ -68,9 +68,8 @@ func _add_car(index: int) -> void:
 	var car := preload("res://car/car.tscn").instantiate()
 	car.index = index
 	_car_container.add_child(car)
-	car.global_position = _spawn_points[index].global_position
-	car.rotation = PI / 4 + index * PI / 2
-	_car_count += 1
+	car.global_position = Vector2.RIGHT.rotated(index * TAU / _car_count) * SPAWN_DISTANCE
+	car.rotation = index * TAU / _car_count
 	car.died.connect(
 		func():
 			_car_count -= 1
@@ -88,6 +87,7 @@ func _game_over() -> void:
 
 func _start_game() -> void:
 	_remove_cars()
+	_car_count = DamageHandler.players.size()
 	for x in DamageHandler.players:
 		_add_car(x)
 

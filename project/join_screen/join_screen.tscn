@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://d37e7titp22e4"]
+[gd_scene load_steps=2 format=3 uid="uid://d37e7titp22e4"]
 
 [ext_resource type="Script" uid="uid://cal4u7rqjebr7" path="res://join_screen/join_screen.gd" id="1_h1jp8"]
-[ext_resource type="PackedScene" uid="uid://d23nvli1tga01" path="res://join_screen/player_join.tscn" id="2_b12bb"]
 
 [node name="JoinScreen" type="Control"]
 layout_mode = 3
@@ -12,22 +11,11 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_h1jp8")
 
-[node name="PlayerContainer" type="HBoxContainer" parent="."]
+[node name="PlayerContainer" type="GridContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="PlayerJoin" parent="PlayerContainer" instance=ExtResource("2_b12bb")]
-layout_mode = 2
-
-[node name="PlayerJoin2" parent="PlayerContainer" instance=ExtResource("2_b12bb")]
-layout_mode = 2
-
-[node name="PlayerJoin3" parent="PlayerContainer" instance=ExtResource("2_b12bb")]
-layout_mode = 2
-
-[node name="PlayerJoin4" parent="PlayerContainer" instance=ExtResource("2_b12bb")]
-layout_mode = 2
+columns = 6

@@ -1,6 +1,6 @@
 extends Control
 
-var _player_colors := [
+var _player_colors : PackedColorArray = [
 	Color.RED,
 	Color(0.4, 0.4, 1.0, 1.0),
 	Color.hex(0xabababff),
@@ -8,15 +8,13 @@ var _player_colors := [
 	Color.hex(0xf0de00ff),
 	Color.hex(0xe6e6e6ff),
 	Color.hex(0xd600fcff),
+	Color.hex(0xffa400ff),
+	Color.hex(0x00ffffff),
+	Color.hex(0xa09b00ff),
 ]
 var _player_data := {}
 
-@onready var _player_screen_container : HBoxContainer = $PlayerContainer
-
-
-func _ready() -> void:
-	for child: Control in _player_screen_container.get_children():
-		child.hide()
+@onready var _player_screen_container : GridContainer = $PlayerContainer
 
 
 func _input(event: InputEvent) -> void:
@@ -34,7 +32,7 @@ func _input(event: InputEvent) -> void:
 						_start_game()
 		if event is InputEventKey:
 			if event.keycode == KEY_J:
-				_join_player(mini(3, _player_data.size()))
+				_join_player(_player_data.size())
 			if _is_player_joined(0):
 				if event.keycode == KEY_A:
 					_change_player_color(0, false)
@@ -49,12 +47,12 @@ func _is_player_joined(index: int) -> bool:
 
 
 func _join_player(index: int) -> void:
-	if _is_player_joined(index):
+	if _is_player_joined(index) or index == _player_colors.size() - 1:
 		return
 	
-	_player_data[index] = {"color":-1}
-	
-	_player_screen_container.get_child(index).show()
+	var player_display := preload("res://join_screen/player_join.tscn").instantiate()
+	_player_screen_container.add_child(player_display)
+	_player_data[index] = {"color":-1, "display":player_display}
 	_set_player_color(index, _find_next_unused_color_index(0))
 
 
@@ -86,7 +84,7 @@ func _change_player_color(index: int, forward := true) -> void:
 
 func _set_player_color(index: int, color: int) -> void:
 	_player_data[index].color = color
-	_player_screen_container.get_child(index).set_color(_player_colors[color])
+	_player_data[index].display.set_color(_player_colors[color])
 
 
 func _start_game() -> void:

@@ -10,21 +10,6 @@ script = ExtResource("1_pjrb6")
 [node name="OilSlick" parent="." instance=ExtResource("3_xwkvk")]
 position = Vector2(527, 291)
 points = 128
-frequency = null
-
-[node name="SpawnPointContainer" type="Node2D" parent="."]
-
-[node name="Marker2D" type="Marker2D" parent="SpawnPointContainer"]
-position = Vector2(162, 140)
-
-[node name="Marker2D2" type="Marker2D" parent="SpawnPointContainer"]
-position = Vector2(998, 135)
-
-[node name="Marker2D3" type="Marker2D" parent="SpawnPointContainer"]
-position = Vector2(984, 507)
-
-[node name="Marker2D4" type="Marker2D" parent="SpawnPointContainer"]
-position = Vector2(152, 505)
 
 [node name="CarContainer" type="Node2D" parent="."]
 

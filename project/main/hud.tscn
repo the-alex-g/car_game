@@ -6,22 +6,6 @@
 [node name="Hud" type="CanvasLayer"]
 script = ExtResource("1_gljsp")
 
-[node name="ScoreLabelContainer" type="VBoxContainer" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="Label" type="Label" parent="ScoreLabelContainer"]
-layout_mode = 2
-
-[node name="Label2" type="Label" parent="ScoreLabelContainer"]
-layout_mode = 2
-
-[node name="Label3" type="Label" parent="ScoreLabelContainer"]
-layout_mode = 2
-
-[node name="Label4" type="Label" parent="ScoreLabelContainer"]
-layout_mode = 2
-
 [node name="EndGameScreen" parent="." instance=ExtResource("2_yvbcs")]
 visible = false
 

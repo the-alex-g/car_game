@@ -22,6 +22,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("2_exwm6")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
@@ -31,7 +32,7 @@ offset_bottom = 40.0
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
 material = SubResource("ShaderMaterial_upa2b")
-instance_shader_parameters/chassis_color = Color(0.837354, 0.00187248, 0.986281, 1)
+instance_shader_parameters/chassis_color = Color(0.627451, 0.607843, 0, 1)
 instance_shader_parameters/damageable = false
 layout_mode = 2
 texture = ExtResource("1_ktdwm")
