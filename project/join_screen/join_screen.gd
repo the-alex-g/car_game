@@ -11,6 +11,7 @@ var _player_colors : PackedColorArray = [
 	Color.hex(0xffa400ff),
 	Color.hex(0x00ffffff),
 	Color.hex(0xa09b00ff),
+	Color.hex(0xee41caff),
 ]
 var _player_data := {}
 

@@ -32,7 +32,7 @@ offset_bottom = 40.0
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
 material = SubResource("ShaderMaterial_upa2b")
-instance_shader_parameters/chassis_color = Color(0.627451, 0.607843, 0, 1)
+instance_shader_parameters/chassis_color = Color(0.931756, 0.253955, 0.790224, 1)
 instance_shader_parameters/damageable = false
 layout_mode = 2
 texture = ExtResource("1_ktdwm")
