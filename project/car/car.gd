@@ -16,7 +16,9 @@ const CAR_INFORMATION := [
 @export var braking := 100.0
 @export var max_speed_reverse := 100.0
 @export var sideways_push_resistance := 0.02
-@export var color := Color.RED;
+@export var color : Color :
+	get():
+		return DamageHandler.get_car_color(index)
 @export var index := 0
 
 var _steer_direction := 0.0
@@ -35,7 +37,7 @@ func _initialize_shader() -> void:
 	_sprite.material = shader_material
 	_sprite.set_instance_shader_parameter(
 		"chassis_color",
-		DamageHandler.get_car_color(index)
+		color
 	)
 	_sprite.material.set_shader_parameter("damage", DamageHandler.generate_car_texture(index))
 

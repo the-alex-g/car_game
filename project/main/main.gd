@@ -37,7 +37,7 @@ func _position_camera() -> void:
 			max_x = maxf(car.global_position.x, max_x)
 			max_y = maxf(car.global_position.y, max_y)
 			average += car.global_position
-	average /= 4
+	average /= _car_count
 	
 	var rect := Rect2(
 		min_x - SCREEN_MARGIN, min_y - SCREEN_MARGIN,
@@ -82,7 +82,7 @@ func _game_over() -> void:
 	for car : Car in _car_container.get_children():
 		if not car.disabled:
 			game_ended.emit(car)
-			break
+			return
 
 
 func _start_game() -> void:

@@ -2,10 +2,16 @@ extends Control
 
 signal exited
 
+@export var winner_label_settings := LabelSettings.new()
+
 var _exitable := false
 
 @onready var _dead_time_timer : Timer = $DeadTimeTimer
 @onready var _instrux_label : Label = $Label2
+
+
+func _ready() -> void:
+	$Label.label_settings = winner_label_settings
 
 
 func _input(event: InputEvent) -> void:
@@ -14,8 +20,9 @@ func _input(event: InputEvent) -> void:
 		hide()
 
 
-func open_screen(_winner: Car) -> void:
+func open_screen(winner: Car) -> void:
 	show()
+	winner_label_settings.font_color = winner.color
 	_dead_time_timer.start()
 
 
