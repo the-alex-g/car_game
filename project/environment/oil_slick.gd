@@ -9,6 +9,8 @@ extends Area2D
 @export var frequency := 1.0
 
 var _shape : PackedVector2Array = []
+var _config : PackedVector2Array = []
+var _percent_spread := 0.0
 
 @onready var _collision_polygon : CollisionPolygon2D = $CollisionPolygon2D
 
@@ -17,9 +19,20 @@ func _ready() -> void:
 	splash()
 
 
+func _process(_delta: float) -> void:
+	if _percent_spread < 1.0:
+		_shape = []
+		for point in _config:
+			_shape.append(
+				Vector2.RIGHT.rotated(point.x) * lerpf(10.0, lerpf(min_radius, max_radius, point.y), _percent_spread)
+			)
+		_collision_polygon.polygon = _shape
+		queue_redraw()
+
+
 func splash() -> void:
-	scale = Vector2(0.2, 0.2)
-	_shape = []
+	_config = []
+	_percent_spread = 0.0
 	
 	var noise := FastNoiseLite.new()
 	noise.seed = randi()
@@ -28,14 +41,11 @@ func splash() -> void:
 	var image := noise.get_seamless_image(points, 1)
 	
 	for i in points:
-		_shape.append(
-			Vector2.RIGHT.rotated(TAU * i / points) * lerpf(min_radius, max_radius, _average(image.get_pixel(i, 0)))
+		_config.append(
+			Vector2(TAU * i / points, _average(image.get_pixel(i, 0)))
 		)
 	
-	_collision_polygon.polygon = _shape
-	queue_redraw()
-	
-	get_tree().create_tween().tween_property(self, "scale", Vector2.ONE, 1.0).set_trans(Tween.TRANS_QUAD)
+	get_tree().create_tween().tween_property(self, "_percent_spread", 1.0, 1.0).set_trans(Tween.TRANS_QUAD)
 
 
 func _average(color: Color) -> float:
@@ -53,4 +63,5 @@ func _on_body_exited(body: Node2D) -> void:
 
 
 func _draw() -> void:
-	draw_colored_polygon(_shape, Color(0.0, 0.0, 0.05, 1.0))
+	if _shape.size() >= 3:
+		draw_colored_polygon(_shape, Color(0.0, 0.0, 0.05, 1.0))
