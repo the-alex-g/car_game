@@ -21,6 +21,8 @@ func _input(event: InputEvent) -> void:
 
 
 func open_screen(winner: Car) -> void:
+	_exitable = false
+	_instrux_label.hide()
 	show()
 	winner_label_settings.font_color = winner.color
 	_dead_time_timer.start()
