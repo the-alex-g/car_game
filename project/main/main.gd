@@ -19,15 +19,16 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	_position_camera()
+	if _car_count > 0:
+		_position_camera()
 
 
 func _position_camera() -> void:
 	var current_camera_position := _camera.position
 	var min_x := INF
 	var min_y := INF
-	var max_x := 0.0
-	var max_y := 0.0
+	var max_x := -INF
+	var max_y := -INF
 	var average := Vector2.ZERO
 	
 	for car : Car in _car_container.get_children():
@@ -51,8 +52,8 @@ func _position_camera() -> void:
 	else:
 		_camera.position = new_center
 	
-	var zoom := (rect.size.x + rect.size.y) / _screen_size.y
-	_camera.zoom = Vector2.ONE / zoom
+	var screen_rect := rect.size / _screen_size * 2
+	_camera.zoom = Vector2.ONE / maxf(screen_rect.x, screen_rect.y)
 	
 	_cull_cars(average)
 
