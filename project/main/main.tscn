@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://cafrovvxxyjum"]
+[gd_scene load_steps=4 format=3 uid="uid://cafrovvxxyjum"]
 
 [ext_resource type="Script" uid="uid://bu36oo40u0tdy" path="res://main/main.gd" id="1_pjrb6"]
 [ext_resource type="PackedScene" uid="uid://dmv4xudvh6xyj" path="res://main/hud.tscn" id="2_pjrb6"]
+[ext_resource type="PackedScene" uid="uid://bhxpnnoqeju42" path="res://environment/objects/oil_drum.tscn" id="2_xwkvk"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_pjrb6")
@@ -15,6 +16,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.8, 0.701867, 0.432, 1)
+
+[node name="EnvironmentalEffects" type="Node2D" parent="."]
+
+[node name="OilDrum" parent="EnvironmentalEffects" instance=ExtResource("2_xwkvk")]
 
 [node name="CarContainer" type="Node2D" parent="."]
 

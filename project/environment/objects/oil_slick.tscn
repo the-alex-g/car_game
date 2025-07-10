@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://bpcjncwrtcj3p"]
 
-[ext_resource type="Shader" uid="uid://symcjodqfd3c" path="res://environment/oil_slick.gdshader" id="1_p4ja5"]
-[ext_resource type="Script" uid="uid://dj4kg7tv83nls" path="res://environment/oil_slick.gd" id="1_xymsh"]
+[ext_resource type="Shader" uid="uid://symcjodqfd3c" path="res://environment/objects/oil_slick.gdshader" id="1_p4ja5"]
+[ext_resource type="Script" uid="uid://dj4kg7tv83nls" path="res://environment/objects/oil_slick.gd" id="1_xymsh"]
 [ext_resource type="Script" uid="uid://dxeqbgbjum0us" path="res://car/physics_mod.gd" id="2_t2ahq"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bq0hj"]

@@ -3,10 +3,17 @@ extends CharacterBody2D
 
 @export var physics := PhysicsMod.new()
 @export var disabled := false
+@export var center_of_mass_offset := Vector2.ZERO
 
 var _acceleration := Vector2.ZERO
 var _rotational_acceleration := 0.0
 var _rotational_velocity := 0.0
+var global_center_of_mass : Vector2 :
+	get():
+		return center_of_mass_offset + global_position
+var center_of_mass : Vector2 :
+	get():
+		return center_of_mass_offset + position
 
 
 func _physics_process(delta: float) -> void:
@@ -44,7 +51,7 @@ func _apply_friction() -> void:
 
 
 func apply_impulse(impulse: Vector2, at: Vector2) -> Vector2:
-	var offset := at - global_position
+	var offset := at - global_center_of_mass
 	impulse *= physics.bounciness / physics.mass
 	velocity += impulse
 	var torque := (impulse - impulse.project(offset)).length() * offset.length()

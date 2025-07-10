@@ -5,11 +5,6 @@ extends CustomPhysicsBody
 
 signal died
 
-const CAR_INFORMATION := [
-	{"color":0x5d5b5b, "name":"black"},
-	{"color":0x0, "name":"green"},
-]
-
 @export var wheel_base := 8.0
 @export var steering_angle := PI / 30
 @export var engine_power := 350.0
@@ -88,16 +83,23 @@ func _calculate_steering(delta: float) -> void:
 	rotation = heading.angle() + _rotational_velocity * delta
 
 
+func _damage_self(magnitude: float, at: Vector2) -> bool:
+	var died_this_turn := DamageHandler.damage_car(
+		index,
+		magnitude,
+		(at - global_position).rotated(-rotation)
+	)
+	_sprite.material.set_shader_parameter("damage", DamageHandler.generate_car_texture(index))
+	return died_this_turn
+
+
 func apply_impulse(impulse: Vector2, at: Vector2) -> Vector2:
 	impulse = super.apply_impulse(impulse, at)
 	
+	var died_this_turn := _damage_self(impulse.length() / 200, at)
+	
 	if not _dead:
-		_dead = DamageHandler.damage_car(
-			index,
-			impulse.length() / 200,
-			(at - global_position).rotated(-rotation)
-		)
-		_sprite.material.set_shader_parameter("damage", DamageHandler.generate_car_texture(index))
+		_dead = died_this_turn
 		if _dead:
 			die()
 	

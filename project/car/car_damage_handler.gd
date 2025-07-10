@@ -91,7 +91,7 @@ func damage_car(index: int, amount: float, offset: Vector2, radius := 17) -> boo
 	var frontier : Array[Vector3i] = [Vector3i(0, position.x, position.y)]
 	var visited : Array[Vector2i] = []
 	var visited_count := 0
-	
+	var deadp := false
 	var impact_point := position
 	if not point_exists(index, position):
 		impact_point = Vector2i.MAX
@@ -113,7 +113,7 @@ func damage_car(index: int, amount: float, offset: Vector2, radius := 17) -> boo
 					1.0
 				)
 				if current_value.g == 1.0 and current_value.r > current_value.b:
-					return true
+					deadp = true
 				car_damage_images[index].set_pixelv(current, current_value)
 		
 			for direction : Vector2i in [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]:
@@ -129,7 +129,7 @@ func damage_car(index: int, amount: float, offset: Vector2, radius := 17) -> boo
 						insertion_index += 1
 					frontier.insert(insertion_index, Vector3i(heuristic, new.x, new.y))
 	
-	return false
+	return deadp
 
 
 func generate_car_texture(index: int) -> ImageTexture:

@@ -1,0 +1,42 @@
+[gd_scene load_steps=10 format=3 uid="uid://bhxpnnoqeju42"]
+
+[ext_resource type="Script" uid="uid://bgq7ktar6hm2y" path="res://environment/objects/oil_drum.gd" id="1_81187"]
+[ext_resource type="Texture2D" uid="uid://lb4tklyaadrk" path="res://environment/images/oil_drum.svg" id="2_81187"]
+[ext_resource type="Shader" uid="uid://c5gmcj6l01sdl" path="res://environment/objects/rust.gdshader" id="2_afmjn"]
+[ext_resource type="Script" uid="uid://dxeqbgbjum0us" path="res://car/physics_mod.gd" id="2_vv1nv"]
+
+[sub_resource type="Resource" id="Resource_swd8h"]
+script = ExtResource("2_vv1nv")
+friction = 0.9
+drag = 0.001
+mass = 450.0
+bounciness = 0.5
+metadata/_custom_type_script = "uid://dxeqbgbjum0us"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_afmjn"]
+radius = 13.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_81187"]
+frequency = 0.02
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_afmjn"]
+noise = SubResource("FastNoiseLite_81187")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vv1nv"]
+shader = ExtResource("2_afmjn")
+shader_parameter/rust_cutoff = 0.3
+shader_parameter/noise = SubResource("NoiseTexture2D_afmjn")
+shader_parameter/rust_color = Color(0.887048, 0.333778, 3.85046e-07, 1)
+
+[node name="OilDrum" type="CharacterBody2D"]
+script = ExtResource("1_81187")
+physics = SubResource("Resource_swd8h")
+metadata/_custom_type_script = "uid://dgxtdbjp40ty8"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_afmjn")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_vv1nv")
+instance_shader_parameters/noise_offset = Vector2(0.1, 0.1)
+texture = ExtResource("2_81187")
