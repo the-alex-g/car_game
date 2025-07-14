@@ -93,17 +93,17 @@ func _damage_self(magnitude: float, at: Vector2) -> bool:
 	return died_this_turn
 
 
-func apply_impulse(impulse: Vector2, at: Vector2) -> Vector2:
-	impulse = super.apply_impulse(impulse, at)
+func apply_impulse(applied_impulse: Vector2, at: Vector2) -> Vector2:
+	applied_impulse = super.apply_impulse(applied_impulse, at)
 	
-	var died_this_turn := _damage_self(impulse.length() / 200, at)
+	var died_this_turn := _damage_self(applied_impulse.length() / 200, at)
 	
 	if not _dead:
 		_dead = died_this_turn
 		if _dead:
 			die()
 	
-	return impulse
+	return applied_impulse
 
 
 func die() -> void:

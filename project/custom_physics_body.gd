@@ -8,6 +8,11 @@ extends CharacterBody2D
 var _acceleration := Vector2.ZERO
 var _rotational_acceleration := 0.0
 var _rotational_velocity := 0.0
+var impulse : Vector2 :
+	get():
+		return velocity * physics.mass
+	set(value):
+		velocity = value / physics.mass
 var global_center_of_mass : Vector2 :
 	get():
 		return center_of_mass_offset + global_position
@@ -26,13 +31,12 @@ func _physics_process(delta: float) -> void:
 	rotation += _rotational_velocity * delta
 	var collision := move_and_collide(velocity * delta)
 	if collision:
-		var impulse := velocity * physics.mass
+		var collision_impulse := impulse
 		if collision.get_collider() is CustomPhysicsBody:
 			var collider : CustomPhysicsBody = collision.get_collider()
-			impulse -= collider.velocity
-			impulse /= 2
-			collider.apply_impulse(impulse, collision.get_position())
-		apply_impulse(-impulse, collision.get_position())
+			collision_impulse -= collider.impulse
+			collider.apply_impulse(collision_impulse / 2, collision.get_position())
+		apply_impulse(-collision_impulse / 2, collision.get_position())
 
 
 func _resolve_custom_physics(_delta: float) -> void:
@@ -50,12 +54,13 @@ func _apply_friction() -> void:
 	_rotational_acceleration -= _rotational_velocity * physics.friction
 
 
-func apply_impulse(impulse: Vector2, at: Vector2) -> Vector2:
+func apply_impulse(applied_impulse: Vector2, at: Vector2) -> Vector2:
 	var offset := at - global_center_of_mass
-	impulse *= physics.bounciness / physics.mass
-	velocity += impulse
-	var torque := (impulse - impulse.project(offset)).length() * offset.length()
+	applied_impulse *= physics.bounciness / physics.mass
+	velocity += applied_impulse
+	var torque := (applied_impulse - applied_impulse.project(offset)).length() * \
+		offset.length()
 	torque /= physics.mass * 5
 	_rotational_velocity += torque
 	
-	return impulse
+	return applied_impulse

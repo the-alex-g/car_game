@@ -2,6 +2,7 @@
 extends Area2D
 
 @export_tool_button("splash") var foo := splash
+@export var color := Color(0.1, 0.1, 0.15)
 @export var physics := PhysicsMod.new()
 @export var min_radius := 30
 @export var max_radius := 70
@@ -48,8 +49,8 @@ func splash() -> void:
 	get_tree().create_tween().tween_property(self, "_percent_spread", 1.0, 1.0).set_trans(Tween.TRANS_QUAD)
 
 
-func _average(color: Color) -> float:
-	return (color.r + color.g + color.b) / 3
+func _average(c: Color) -> float:
+	return (c.r + c.g + c.b) / 3
 
 
 func _on_body_entered(body: Node2D) -> void:
@@ -64,4 +65,4 @@ func _on_body_exited(body: Node2D) -> void:
 
 func _draw() -> void:
 	if _shape.size() >= 3:
-		draw_colored_polygon(_shape, Color(0.0, 0.0, 0.05, 1.0))
+		draw_colored_polygon(_shape, color)
