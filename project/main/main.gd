@@ -9,6 +9,7 @@ const SPAWN_DISTANCE := 400
 
 @onready var _car_container := $CarContainer
 @onready var _camera : Camera2D = $Camera2D
+@onready var _environmental_effects_container : Node2D = $EnvironmentalEffects
 
 var _screen_size := Vector2(DisplayServer.screen_get_size())
 var _car_count := 0
@@ -87,16 +88,38 @@ func _game_over() -> void:
 
 
 func _start_game() -> void:
-	_remove_cars()
+	_clear_board()
+	_initialize_terrain()
 	_car_count = DamageHandler.players.size()
 	for x in DamageHandler.players:
 		_add_car(x)
+
+
+func _clear_board() -> void:
+	_remove_cars()
+	_remove_terrain()
 
 
 func _remove_cars() -> void:
 	for car in _car_container.get_children():
 		car.queue_free()
 	_car_count = 0
+
+
+func _remove_terrain() -> void:
+	for child: Node2D in _environmental_effects_container.get_children():
+		child.queue_free()
+
+
+func _initialize_terrain() -> void:
+	for x in randi_range(3, 10):
+		_add_oil_barrel(Vector2.RIGHT.rotated(randf() * TAU) * randf_range(0.0, 1000.0))
+
+
+func _add_oil_barrel(pos: Vector2) -> void:
+	var oil_barrel := preload("res://environment/objects/oil_drum.tscn").instantiate()
+	_environmental_effects_container.add_child(oil_barrel)
+	oil_barrel.position = pos
 
 
 func _on_hud_game_continued() -> void:

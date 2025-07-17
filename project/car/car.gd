@@ -72,6 +72,9 @@ func _calculate_steering(delta: float) -> void:
 	front_wheel += velocity.rotated(_steer_direction) * delta
 	var heading : Vector2 = lerp(transform.x, front_wheel - rear_wheel, physics.friction).normalized()
 	
+	$Drivetrain/Wheel.rotation = _steer_direction
+	$Drivetrain/Wheel2.rotation = _steer_direction
+	
 	var dot_product := heading.dot(velocity.normalized())
 	var forward_speed := velocity.project(transform.x).length()
 	var sideways_velocity := velocity.project(transform.y)

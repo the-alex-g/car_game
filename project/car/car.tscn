@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://dklsh7qt6lamo"]
+[gd_scene load_steps=11 format=3 uid="uid://dklsh7qt6lamo"]
 
 [ext_resource type="Script" uid="uid://7ak0k7bb14b0" path="res://car/car.gd" id="1_2gitb"]
 [ext_resource type="Script" uid="uid://dxeqbgbjum0us" path="res://car/physics_mod.gd" id="2_bkrhx"]
 [ext_resource type="Texture2D" uid="uid://bbro3aas4yija" path="res://explosions/particle.png" id="2_h3fet"]
 [ext_resource type="Texture2D" uid="uid://ccu1xgv3ylejm" path="res://car/images/drivetrain.png" id="2_jpe8o"]
+[ext_resource type="Texture2D" uid="uid://c85syuk7adkyw" path="res://car/images/wheel.png" id="4_bkrhx"]
 [ext_resource type="Texture2D" uid="uid://brhc63dfrnrr" path="res://car/images/car.png" id="5_bkrhx"]
 
 [sub_resource type="Resource" id="Resource_xhmyn"]
@@ -36,6 +37,14 @@ shape = SubResource("CapsuleShape2D_dxy33")
 
 [node name="Drivetrain" type="Sprite2D" parent="."]
 texture = ExtResource("2_jpe8o")
+
+[node name="Wheel" type="Sprite2D" parent="Drivetrain"]
+position = Vector2(36, -29)
+texture = ExtResource("4_bkrhx")
+
+[node name="Wheel2" type="Sprite2D" parent="Drivetrain"]
+position = Vector2(36, 29)
+texture = ExtResource("4_bkrhx")
 
 [node name="SmokeParticles" type="CPUParticles2D" parent="."]
 emitting = false
