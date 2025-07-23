@@ -1,7 +1,28 @@
-[gd_scene load_steps=4 format=3 uid="uid://bpcjncwrtcj3p"]
+[gd_scene load_steps=11 format=3 uid="uid://bpcjncwrtcj3p"]
 
+[ext_resource type="Shader" uid="uid://duiqsbqbj2nig" path="res://environment/objects/oil_slick.gdshader" id="1_jrok8"]
 [ext_resource type="Script" uid="uid://dj4kg7tv83nls" path="res://environment/objects/oil_slick.gd" id="1_xymsh"]
 [ext_resource type="Script" uid="uid://dxeqbgbjum0us" path="res://car/physics_mod.gd" id="2_t2ahq"]
+
+[sub_resource type="Gradient" id="Gradient_jrok8"]
+offsets = PackedFloat32Array(0.324324, 0.363363, 0.373874, 0.52123, 0.540984, 0.569069, 0.600601, 0.617117, 0.635135)
+colors = PackedColorArray(0.117647, 0.117647, 0.196078, 1, 0.117647, 0.619608, 1, 1, 0.117647, 0.117647, 0.196078, 1, 0.117647, 0.117647, 0.196078, 1, 1, 0.23, 0.897333, 1, 0.117647, 0.117647, 0.156863, 1, 0.117647, 0.117647, 0.196078, 1, 0.117647, 1, 0.196078, 1, 0.117647, 0.117647, 0.196078, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_duv4e"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_pfu0o"]
+color_ramp = SubResource("Gradient_jrok8")
+noise = SubResource("FastNoiseLite_duv4e")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_e0lub"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_dvckk"]
+noise = SubResource("FastNoiseLite_e0lub")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_duv4e"]
+shader = ExtResource("1_jrok8")
+shader_parameter/noise = SubResource("NoiseTexture2D_pfu0o")
+shader_parameter/variance = SubResource("NoiseTexture2D_dvckk")
 
 [sub_resource type="Resource" id="Resource_p4ja5"]
 script = ExtResource("2_t2ahq")
@@ -13,6 +34,7 @@ metadata/_custom_type_script = "uid://dxeqbgbjum0us"
 
 [node name="OilSlick" type="Area2D"]
 z_index = -1
+material = SubResource("ShaderMaterial_duv4e")
 script = ExtResource("1_xymsh")
 physics = SubResource("Resource_p4ja5")
 min_radius = 20
@@ -21,7 +43,7 @@ frequency = 0.02
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 visible = false
-polygon = PackedVector2Array(40.8578, 0, 41.2073, 4.05857, 45.4566, 9.04187, 52.2308, 15.8441, 52.4549, 21.7275, 51.7671, 27.6701, 50.1749, 33.5258, 50.4662, 41.4165, 47.7163, 47.7163, 42.9836, 52.3757, 38.8628, 58.1623, 34.7861, 65.0802, 28.6598, 69.1908, 22.4569, 74.0306, 15.6815, 78.8364, 7.95941, 80.8132, -3.62154e-06, 82.8511, -8.44365, 85.7298, -17.395, 87.4505, -26.0422, 85.8497, -33.7014, 81.3623, -36.4681, 68.227, -38.7103, 57.9341, -41.9389, 51.1027, -42.6703, 42.6703, -43.4647, 35.6706, -43.5568, 29.1037, -42.811, 22.8829, -40.2834, 16.6859, -43.8261, 13.2945, -45.4566, 9.04187, -46.9434, 4.62352, -50.7386, -4.43571e-06, -53.772, -5.29607, -56.2242, -11.1837, -53.5441, -16.2424, -43.0727, -17.8413, -35.3072, -18.8721, -29.1796, -19.4972, -26.4916, -21.741, -23.0685, -23.0685, -17.3881, -21.1874, -12.1779, -18.2255, -9.42718, -17.637, -8.49333, -20.5047, -6.60196, -21.7637, -4.54404, -22.8444, -2.65964, -27.0038, 4.21765e-07, -35.3685, 3.97785, -40.3879, 7.11423, -35.7657, 7.87673, -25.9661, 9.3336, -22.5333, 11.1091, -20.7838, 13.2453, -19.823, 14.2539, -17.3685, 15.3055, -15.3055, 16.5198, -13.5574, 19.1384, -12.7879, 25.1408, -13.438, 27.3512, -11.3292, 33.8455, -10.2669, 38.7268, -7.70323, 42.2999, -4.16618)
+polygon = PackedVector2Array(29.6073, 0, 33.5625, 3.30562, 33.6153, 6.6865, 30.9593, 9.39139, 32.1721, 13.3261, 32.6478, 17.4506, 32.606, 21.7866, 32.2233, 26.445, 29.4761, 29.4761, 29.4054, 35.8306, 28.1919, 42.1921, 24.05, 44.9943, 20.6795, 49.9247, 15.4474, 50.9232, 10.1139, 50.8459, 5.00069, 50.7729, -2.06211e-06, 47.1755, -4.75853, 48.3142, -10.1139, 50.8459, -15.288, 50.3978, -19.8391, 47.8958, -23.7912, 44.5102, -25.9043, 38.7685, -28.7088, 34.9818, -32.9699, 32.9699, -37.5281, 30.7985, -41.0509, 27.4293, -44.2681, 23.6618, -45.8669, 18.9987, -48.559, 14.7302, -48.1536, 9.57835, -49.9533, 4.91997, -53.7636, -4.70016e-06, -54.051, -5.32356, -54.8843, -10.9172, -56.7022, -17.2004, -61.5906, -25.5117, -63.8773, -34.1431, -62.049, -41.4599, -61.2938, -50.3025, -57.4268, -57.4268, -52.5664, -64.0523, -48.6276, -72.7763, -40.6131, -75.9818, -33.3902, -80.6111, -25.8063, -85.0719, -17.3435, -87.1917, -8.39082, -85.1936, 9.81559e-07, -82.3118, 7.58365, -76.9982, 13.4342, -67.5381, 18.2363, -60.117, 20.8896, -50.4319, 22.109, -41.363, 23.3117, -34.8884, 25.4001, -30.9501, 25.0117, -25.0117, 24.7965, -20.35, 23.9329, -15.9914, 18.8486, -10.0748, 19.2382, -7.96871, 19.9266, -6.04467, 20.4231, -4.06241, 23.4548, -2.3101)
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]
