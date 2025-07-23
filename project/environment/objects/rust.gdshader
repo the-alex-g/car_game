@@ -15,7 +15,7 @@ float distance_from_center(vec2 uv) {
 }
 
 float get_rust_strength(vec2 uv) {
-	float base = texture(noise, uv / 4.0 + noise_offset).r;
+	float base = texture(noise, (uv + noise_offset) / 5.0).r;
 	base *= sin(distance_from_center(uv) * PI);
 	return base;
 }

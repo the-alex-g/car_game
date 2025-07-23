@@ -9,6 +9,7 @@ offsets = PackedFloat32Array(0.324324, 0.363363, 0.373874, 0.52123, 0.540984, 0.
 colors = PackedColorArray(0.117647, 0.117647, 0.196078, 1, 0.117647, 0.619608, 1, 1, 0.117647, 0.117647, 0.196078, 1, 0.117647, 0.117647, 0.196078, 1, 1, 0.23, 0.897333, 1, 0.117647, 0.117647, 0.156863, 1, 0.117647, 0.117647, 0.196078, 1, 0.117647, 1, 0.196078, 1, 0.117647, 0.117647, 0.196078, 1)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_duv4e"]
+frequency = 0.0025
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_pfu0o"]
 color_ramp = SubResource("Gradient_jrok8")
@@ -35,6 +36,7 @@ metadata/_custom_type_script = "uid://dxeqbgbjum0us"
 [node name="OilSlick" type="Area2D"]
 z_index = -1
 material = SubResource("ShaderMaterial_duv4e")
+instance_shader_parameters/offset = Vector2(0, 0)
 script = ExtResource("1_xymsh")
 physics = SubResource("Resource_p4ja5")
 min_radius = 20

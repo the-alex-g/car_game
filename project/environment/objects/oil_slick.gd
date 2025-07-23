@@ -17,6 +17,7 @@ var _percent_spread := 0.0
 
 
 func _ready() -> void:
+	set_instance_shader_parameter("offset", Vector2(randf(), randf()) * 4.0)
 	splash()
 
 

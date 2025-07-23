@@ -1,9 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://06vt7uujs2nu"]
+[gd_scene load_steps=4 format=3 uid="uid://06vt7uujs2nu"]
 
 [ext_resource type="Script" uid="uid://cx1vfvkucnh0f" path="res://main/end_game_screen.gd" id="1_luc5o"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_luc5o"]
 font_size = 64
+
+[sub_resource type="LabelSettings" id="LabelSettings_lttkf"]
+font_size = 32
+font_color = Color(0.83, 0.83, 0.83, 1)
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
 
 [node name="EndGameScreen" type="Control"]
 layout_mode = 3
@@ -42,6 +48,7 @@ offset_right = 20.0
 grow_horizontal = 2
 grow_vertical = 0
 text = "press any button to continue"
+label_settings = SubResource("LabelSettings_lttkf")
 
 [node name="DeadTimeTimer" type="Timer" parent="."]
 wait_time = 2.0
