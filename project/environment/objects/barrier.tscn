@@ -1,0 +1,27 @@
+[gd_scene load_steps=6 format=3 uid="uid://ccvi84nmwbx6u"]
+
+[ext_resource type="Script" uid="uid://dgxtdbjp40ty8" path="res://custom_physics_body.gd" id="1_p5168"]
+[ext_resource type="Script" uid="uid://dxeqbgbjum0us" path="res://car/physics_mod.gd" id="2_866vw"]
+[ext_resource type="Texture2D" uid="uid://dj2lp4masoyap" path="res://environment/images/barrier.png" id="2_a7qqk"]
+
+[sub_resource type="Resource" id="Resource_866vw"]
+script = ExtResource("2_866vw")
+friction = 0.9
+drag = 0.001
+mass = 100.0
+bounciness = 0.5
+metadata/_custom_type_script = "uid://dxeqbgbjum0us"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_866vw"]
+size = Vector2(100, 6)
+
+[node name="Barrier" type="CharacterBody2D"]
+script = ExtResource("1_p5168")
+physics = SubResource("Resource_866vw")
+metadata/_custom_type_script = "uid://dgxtdbjp40ty8"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_866vw")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_a7qqk")

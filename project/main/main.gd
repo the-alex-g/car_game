@@ -113,13 +113,15 @@ func _remove_terrain() -> void:
 
 func _initialize_terrain() -> void:
 	for x in randi_range(3, 10):
-		_add_oil_barrel(Vector2.RIGHT.rotated(randf() * TAU) * randf_range(0.0, 1000.0))
+		_add_terrain_element(["oil_drum", "barrier"].pick_random())
 
 
-func _add_oil_barrel(pos: Vector2) -> void:
-	var oil_barrel := preload("res://environment/objects/oil_drum.tscn").instantiate()
-	_environmental_effects_container.add_child(oil_barrel)
-	oil_barrel.position = pos
+func _add_terrain_element(type: String) -> void:
+	var element : Node2D = load("res://environment/objects/%s.tscn" % type).instantiate()
+	_environmental_effects_container.add_child(element)
+	var pos := Vector2.RIGHT.rotated(randf() * TAU) * randf_range(0.0, 1000.0)
+	element.position = pos
+	element.rotation = randf() * TAU
 
 
 func _on_hud_game_continued() -> void:
